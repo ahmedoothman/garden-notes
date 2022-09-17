@@ -1,0 +1,21 @@
+@import '../../sass/main.scss';
+
+.btn {
+  width: 100%;
+  background-color: $color-primary-black-light;
+  padding: 8px 0px;
+  color: $color-primary-grey;
+  border: none;
+  border-radius: 5px;
+  font-family: $primary-font;
+  font-weight: 100;
+  font-size: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.4s;
+}
+.btn:hover {
+  background-color: $color-primary-black-dark;
+}

@@ -1,0 +1,34 @@
+@import '../../sass/main.scss';
+.conatiner {
+  text-align: center;
+
+  padding: 0px;
+  color: $color-primary-grey;
+}
+.spinner {
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+}
+.spinner:after {
+  content: ' ';
+  display: block;
+  width: 15px;
+  height: 15px;
+  margin: 0px;
+  border-radius: 50%;
+  border: 2px solid $color-primary-grey;
+  border-color: $color-primary-grey transparent $color-primary-grey transparent;
+  animation: spinner 1.2s linear infinite;
+}
+
+@media only screen and (max-width: 900px) {
+}
+@keyframes spinner {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

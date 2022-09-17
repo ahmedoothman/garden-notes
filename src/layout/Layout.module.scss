@@ -1,0 +1,12 @@
+@import '../sass/main.scss';
+
+.main {
+  color: $color-primary-blue;
+  background-color: $color-primary-blue-transparent;
+  height: 100vh; /*don't forget to edit it*/
+  width: 100%;
+}
+.layout-container {
+  display: flex;
+  flex-direction: row;
+}

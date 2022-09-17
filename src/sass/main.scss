@@ -1,0 +1,37 @@
+@import 'mixins';
+@import 'variables';
+@import 'animations';
+.error-message {
+  background-color: white;
+  padding: 0px 10px;
+  border-radius: 5px;
+  color: $color-primary-red;
+  margin-bottom: 20px;
+  font-size: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 218px;
+  transition: all 0.3s;
+  img {
+    width: 20px;
+    margin-right: 12px;
+  }
+}
+.sucess-message {
+  background-color: white;
+  padding: 0px 10px;
+  border-radius: 5px;
+  color: $color-primary-green;
+  margin-bottom: 20px;
+  font-size: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 218px;
+  transition: all 0.3s;
+  img {
+    width: 20px;
+    margin-right: 12px;
+  }
+}

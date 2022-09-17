@@ -1,0 +1,18 @@
+@import '../../sass/main.scss';
+.form-container {
+  height: auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.forget {
+  text-decoration: none;
+  color: $color-primary-black-dark;
+  margin-top: 15px;
+}
+.forget:hover {
+  border-bottom: 2px solid $color-primary-black-dark;
+}
