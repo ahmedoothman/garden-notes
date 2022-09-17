@@ -7,6 +7,8 @@
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
+  transition: all 0.4s;
+  overflow: hidden;
   &__top {
     padding: 0px;
     padding-top: 50px;
@@ -18,6 +20,7 @@
     &__logo {
       width: 80%;
       margin-bottom: 50px;
+      height: 50px;
       img {
         width: 100%;
       }
@@ -34,6 +37,7 @@
         width: 90%;
         float: left;
         padding: 10px;
+        transition: all 0.3s;
       }
       li {
         width: 80%;
@@ -47,6 +51,7 @@
         cursor: pointer;
         transition: all 0.3s;
         font-family: $primary-font;
+        white-space: nowrap;
         img {
           width: 20px;
           margin-right: 10px;
@@ -93,15 +98,19 @@
     hr {
       width: 90%;
       margin: 0;
+      margin-top: 10px;
     }
     &__user {
       width: 100%;
-      margin-top: 5px;
       display: flex;
       padding-left: 20px;
       justify-content: flex-start;
       align-items: center;
       font-size: 12px;
+      h2 {
+        visibility: visible;
+        white-space: nowrap;
+      }
       img {
         width: 30px;
         margin-right: 8px;
@@ -153,6 +162,7 @@
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
+  transition: all 0.4s;
   &__top {
     padding: 0px;
     padding-top: 50px;
@@ -164,6 +174,7 @@
     &__logo {
       width: 50%;
       margin-bottom: 50px;
+      height: 50px;
       img {
         width: 100%;
       }
@@ -185,7 +196,7 @@
         width: auto;
         list-style: none;
         margin-bottom: 20px;
-        padding: 10px;
+        padding: 12px 16px;
         border-radius: 10px;
         display: flex;
         justify-content: flex-start;
@@ -198,7 +209,7 @@
           margin-right: 0px;
         }
         a {
-          text-decoration: underline;
+          text-decoration: none;
           color: $color-primary-grey;
           display: none;
         }
@@ -224,7 +235,7 @@
     &__toggle {
       width: auto;
       text-align: center;
-      padding: 10px;
+      padding: 20px;
       cursor: pointer;
       img {
         transition: all 0.2s;
@@ -243,13 +254,15 @@
     }
     &__user {
       width: auto;
-      margin-top: 5px;
+      margin-top: 10px;
       display: flex;
       padding-left: 0px;
       justify-content: center;
       align-items: center;
       font-size: 12px;
+      white-space: nowrap;
       h2 {
+        visibility: hidden;
         display: none;
       }
       img {
@@ -376,6 +389,7 @@
         width: auto;
         text-align: center;
         padding: 10px;
+        display: none;
         cursor: pointer;
         img {
           transition: all 0.2s;
@@ -526,6 +540,7 @@
         width: auto;
         text-align: center;
         padding: 10px;
+        display: none;
         cursor: pointer;
         img {
           transition: all 0.2s;

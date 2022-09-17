@@ -22,8 +22,12 @@ const SideNav = (props) => {
   const sideNavISMin = useSelector((state) => state.authUi.sideNavISMin);
   const tabActive = useSelector((state) => state.authUi.activeTab);
   const [sideNavClass, setSideNavClass] = useState('side-nav');
+  const [windowState, setWindowState] = useState(window.innerWidth);
+  console.log(windowState);
   const [logoSrc, setlogo] = useState(logo);
   useEffect(() => {
+    setWindowState(window.innerWidth);
+    /* Toggle Nav Show */
     if (sideNavISMin) {
       setSideNavClass('side-nav-min');
       setlogo(logoMin);
@@ -31,7 +35,11 @@ const SideNav = (props) => {
       setSideNavClass('side-nav');
       setlogo(logo);
     }
-  }, [sideNavISMin]);
+    /* Check Window Size */
+    if (windowState < 600) {
+      setlogo(logoMin);
+    }
+  }, [sideNavISMin, windowState]);
 
   const logoutHandler = () => {
     // removeCookie('token');
