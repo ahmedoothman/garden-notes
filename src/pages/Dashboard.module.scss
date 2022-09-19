@@ -1,1 +1,10 @@
 @import '../sass/main.scss';
+
+.top-dash-nav {
+  display: flex;
+  padding-left: 20px;
+  h1 {
+    color: $color-primary-black-dark;
+    padding: 0;
+  }
+}

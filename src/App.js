@@ -6,7 +6,7 @@ import RoutingLoadSpin from './components/UI/RoutingLoadSpin';
 import SignInForm from './components/Auth/SignInForm';
 import SignUpForm from './components/Auth/SignUpForm';
 import ForgetPasswordForm from './components/Auth/ForgetPasswordForm';
-
+import GardenList from './components/DashboardsList/GardenList';
 const LandingPage = React.lazy(() => import('./pages/LandingPage'));
 const AuthPage = React.lazy(() => import('./pages/AuthPage'));
 const ResetPassword = React.lazy(() => import('./pages/ResetPassword'));
@@ -28,7 +28,9 @@ function App() {
         </Route>
         <Route path='/reset-password/:resetToken' element={<ResetPassword />} />
         <Route path='/verify-email/:verifyToken' element={<VerifyEmail />} />
-        <Route path='/dashboard' element={<Dashboard />} />
+        <Route path='/dashboard/*' element={<Dashboard />}>
+          <Route path='garden' element={<GardenList />}></Route>
+        </Route>
       </Routes>
     </Suspense>
   );

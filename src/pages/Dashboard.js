@@ -2,12 +2,13 @@ import { Fragment } from 'react';
 import { useState, useEffect, useCallback, useReducer } from 'react';
 import Layout from '../layout/Layout';
 import { Outlet } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import { NavLink, useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
-import { useCookies } from 'react-cookie';
-import axios from 'axios';
-import RoutingLoadSpin from '../components/UI/RoutingLoadSpin';
-
+import classes from './Dashboard.module.scss';
+import SearchBar from '../components/UI/SearchBar';
+import SearchTabs from '../components/UI/SearchTabs';
+import { type } from '@testing-library/user-event/dist/type';
 /*  */
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -20,18 +21,33 @@ const Dashboard = () => {
     photo: photoCookie,
     email: emailCookie,
   };
+  const isMin = useSelector((state) => state.authUi.sideNavISMin);
   const isLoggedIn = !!tokenExists;
   useEffect(() => {
     if (!isLoggedIn) {
       navigate('/authentication/sign-in', { replace: true });
     }
+    navigate('garden', { replace: true });
   }, [isLoggedIn]);
+  let titleContent = useSelector((state) => state.authUi.activeTab);
 
   return (
     <Fragment>
-      <Layout user={userData}>
+      <Layout user={userData} isMin={isMin}>
+        <div className={classes['top-dash-nav']}>
+          <h1>{titleContent}</h1>
+        </div>
+
+        {/* Search Bar */}
+        <SearchBar
+          config={{
+            type: 'search',
+            placeholder: `Search in ${titleContent} ..`,
+          }}
+        />
+        {/* search tabs */}
+        <SearchTabs tabs={['Flowers', 'Trees', 'Vegetables']} />
         <Outlet />
-        <h1>main</h1>
       </Layout>
     </Fragment>
   );

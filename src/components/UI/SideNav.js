@@ -15,15 +15,16 @@ import logout from '../../img/logout.png';
 import prev from '../../img/prev.png';
 import next from '../../img/next.png';
 import React from 'react';
+import Cookies from 'js-cookie';
 const SideNav = (props) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [cookies, setCookies, removeCookie] = useCookies(['token']);
+  const [cookies, setCookies, removeCookies] = useCookies(['user']);
+  const [isNavMin, setIsNavMin] = useState(Cookies.get('navIsMin'));
   const sideNavISMin = useSelector((state) => state.authUi.sideNavISMin);
   const tabActive = useSelector((state) => state.authUi.activeTab);
   const [sideNavClass, setSideNavClass] = useState('side-nav');
   const [windowState, setWindowState] = useState(window.innerWidth);
-  console.log(windowState);
   const [logoSrc, setlogo] = useState(logo);
   useEffect(() => {
     setWindowState(window.innerWidth);
@@ -38,18 +39,25 @@ const SideNav = (props) => {
     /* Check Window Size */
     if (windowState < 600) {
       setlogo(logoMin);
+      setSideNavClass('side-nav-min');
     }
   }, [sideNavISMin, windowState]);
 
   const logoutHandler = () => {
-    // removeCookie('token');
-    setCookies('token', '', {
-      path: '/',
-    });
+    Cookies.remove('photo');
+    Cookies.remove('token');
+    Cookies.remove('email');
+    Cookies.remove('name');
+    Cookies.remove('navIsMin');
     navigate('/authentication/sign-in', { replace: true });
   };
   const toogleMenu = () => {
     dispatch(authUiActions.toggleSideNav());
+    setIsNavMin(Cookies.get('navIsMin'));
+    Cookies.set('navIsMin', !isNavMin, {
+      path: '/',
+      expires: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000),
+    });
   };
   return (
     <div className={classes[sideNavClass]}>
@@ -59,17 +67,17 @@ const SideNav = (props) => {
         </div>
         <div className={classes[`${sideNavClass}__top__menu`]}>
           <ul>
-            <li className={tabActive === 'garden' ? classes['tab-active'] : ''}>
+            <li className={tabActive === 'Garden' ? classes['tab-active'] : ''}>
               <img src={garden} />
               <NavLink to='garden'>Garden</NavLink>
             </li>
             <li
-              className={tabActive === 'inventory' ? classes['tab-active'] : ''}
+              className={tabActive === 'Inventory' ? classes['tab-active'] : ''}
             >
               <img src={inventory} />
               <NavLink to='inventory'>Inventory</NavLink>
             </li>
-            <li className={tabActive === 'notes' ? classes['tab-active'] : ''}>
+            <li className={tabActive === 'Notes' ? classes['tab-active'] : ''}>
               <img src={note} />
               <NavLink to='notes'>Notes</NavLink>
             </li>
@@ -77,17 +85,22 @@ const SideNav = (props) => {
         </div>
       </div>
 
-      <div className={classes[`${sideNavClass}__bottom`]} onClick={toogleMenu}>
-        {!sideNavISMin && (
-          <div className={classes[`${sideNavClass}__bottom__toggle`]}>
-            <img src={next} />
-          </div>
-        )}
-        {sideNavISMin && (
-          <div className={classes[`${sideNavClass}__bottom__toggle`]}>
-            <img src={prev} />
-          </div>
-        )}
+      <div className={classes[`${sideNavClass}__bottom`]}>
+        <div
+          className={classes[`${sideNavClass}__bottom__tog`]}
+          onClick={toogleMenu}
+        >
+          {!sideNavISMin && (
+            <div className={classes[`${sideNavClass}__bottom__toggle`]}>
+              <img src={next} />
+            </div>
+          )}
+          {sideNavISMin && (
+            <div className={classes[`${sideNavClass}__bottom__toggle`]}>
+              <img src={prev} />
+            </div>
+          )}
+        </div>
         <div className={classes[`${sideNavClass}__bottom__user`]}>
           {/* https://gardennotes.herokuapp.com/api/img/users/default.jpeg */}
           <img src={user} alt='user' />

@@ -9,6 +9,8 @@
   align-items: center;
   transition: all 0.4s;
   overflow: hidden;
+  position: fixed;
+  height: 100%;
   &__top {
     padding: 0px;
     padding-top: 50px;
@@ -79,6 +81,9 @@
     align-items: center;
     overflow: hidden;
     background-color: $color-primary-black-dark;
+    &__tog {
+      width: 80%;
+    }
     &__toggle {
       width: 100%;
       text-align: right;
@@ -163,6 +168,8 @@
   justify-content: space-between;
   align-items: center;
   transition: all 0.4s;
+  position: fixed;
+  height: 100%;
   &__top {
     padding: 0px;
     padding-top: 50px;
@@ -317,6 +324,8 @@
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
+    position: fixed;
+    height: 100vh;
     &__top {
       padding: 0px;
       padding-top: 50px;
@@ -327,7 +336,7 @@
       overflow: hidden;
       &__logo {
         width: 50%;
-        margin-bottom: 50px;
+        margin-bottom: 10px;
         img {
           width: 100%;
         }
@@ -375,158 +384,6 @@
         }
       }
     }
-
-    &__bottom {
-      width: 100%;
-      padding: 0px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      overflow: hidden;
-      background-color: $color-primary-black-dark;
-      &__toggle {
-        width: auto;
-        text-align: center;
-        padding: 10px;
-        display: none;
-        cursor: pointer;
-        img {
-          transition: all 0.2s;
-          width: 30px;
-        }
-      }
-      &__toggle:hover {
-        img {
-          transform: scale(1.05);
-        }
-      }
-      hr {
-        width: 90%;
-        margin: 0;
-        margin-top: 10px;
-      }
-      &__user {
-        width: auto;
-        margin-top: 5px;
-        display: flex;
-        padding-left: 0px;
-        justify-content: center;
-        align-items: center;
-        font-size: 12px;
-        h2 {
-          display: none;
-        }
-        img {
-          width: 30px;
-          margin-right: 0px;
-        }
-      }
-      &__menu {
-        width: auto;
-        display: flex;
-        text-align: center;
-        margin-top: 10px;
-        ul {
-          width: auto;
-          text-align: center;
-          padding: 10px;
-        }
-        li {
-          width: auto;
-          list-style: none;
-          margin-bottom: 10px;
-          padding: 10px;
-          border-radius: 10px;
-          display: flex;
-          justify-content: flex-start;
-          align-items: center;
-          cursor: pointer;
-          transition: all 0.3s;
-          font-family: $primary-font;
-          img {
-            width: 20px;
-            margin-right: 0px;
-          }
-          a {
-            text-decoration: none;
-            color: $color-primary-grey;
-            display: none;
-          }
-        }
-        li:hover {
-          background-color: $color-primary-grey-light;
-        }
-      }
-    }
-  }
-  .side-nav {
-    background-color: $color-primary-black-dark;
-    color: $color-primary-grey;
-    width: 80px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    &__top {
-      padding: 0px;
-      padding-top: 50px;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      align-items: center;
-      overflow: hidden;
-      &__logo {
-        width: 50%;
-        margin-bottom: 50px;
-        img {
-          width: 100%;
-        }
-      }
-      &__menu {
-        width: 100%;
-        display: flex;
-        text-align: center;
-        margin-top: 10px;
-        hr {
-          margin: 40px 0px;
-        }
-        ul {
-          width: auto;
-          float: left;
-          padding: 10px;
-        }
-        li {
-          width: auto;
-          list-style: none;
-          margin-bottom: 20px;
-          padding: 10px;
-          border-radius: 10px;
-          display: flex;
-          justify-content: flex-start;
-          align-items: center;
-          cursor: pointer;
-          transition: all 0.3s;
-          font-family: $primary-font;
-          img {
-            width: 20px;
-            margin-right: 0px;
-          }
-          a {
-            text-decoration: underline;
-            color: $color-primary-grey;
-            display: none;
-          }
-        }
-        li:hover {
-          background-color: $color-primary-grey-light;
-        }
-        .tab-active {
-          background-color: $color-primary-grey-light;
-        }
-      }
-    }
-
     &__bottom {
       width: 100%;
       padding: 0px;

@@ -21,10 +21,7 @@ const SignInForm = () => {
   const [isvalid, setIsvalid] = useState(true);
   const [errorMessage, setErrorMessage] = useState();
   const [pending, setPending] = useState(false);
-  const [cookies, setCookies] = useCookies('token');
-  const [userNameCookie, setUserNameCookie] = useCookies('userName');
-  const [userPhotoCookie, setUserPhotoCookie] = useCookies('userPhoto');
-  const [userEmailCookie, setUserEmailCookie] = useCookies('userEmail');
+  const [cookies, setCookies] = useCookies(['user']);
   dispatch(authUiActions.setShown());
 
   const isLoggedIn = !!checkCookies;
@@ -48,6 +45,10 @@ const SignInForm = () => {
       expires: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000),
     });
     setCookies('email', email, {
+      path: '/',
+      expires: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000),
+    });
+    Cookies.set('navIsMin', false, {
       path: '/',
       expires: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000),
     });
@@ -78,7 +79,6 @@ const SignInForm = () => {
           'https://gardennotes.herokuapp.com/api/users/login',
           data
         );
-        console.log(response.data.data.user.name);
         setIsvalid(true);
         /*Set Cookies */
         setCookiesHandler(

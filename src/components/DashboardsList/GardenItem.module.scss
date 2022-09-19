@@ -1,0 +1,180 @@
+@import '../../sass/main.scss';
+.garden-item {
+  width: 820px;
+  height: 250px;
+  display: flex;
+  justify-content: space-between;
+  border-radius: 10px;
+  background-color: white;
+  padding: 0px;
+  margin-bottom: 20px;
+  &__img {
+    width: 370px;
+    margin: 0px;
+    padding: 0px;
+    border-radius: 10px;
+    img {
+      width: 100%;
+      height: 100%;
+      margin: 0px;
+      border-top-left-radius: 10px;
+      border-bottom-left-radius: 10px;
+    }
+  }
+  &__content {
+    padding: 30px 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    &__title {
+      color: $color-primary-black-light;
+      font-family: $primary-font;
+      font-weight: 500;
+      padding: 0px 20px;
+    }
+    &__mid {
+      display: flex;
+      p {
+        padding: 0px 20px;
+        border-right: 2px solid $color-primary-black-light;
+        color: $color-primary-black-light;
+        font-family: $btn-fonts;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        font-weight: 400;
+        span {
+          font-family: $primary-font;
+          font-weight: 500;
+        }
+      }
+      p:last-child {
+        padding: 0px 10px;
+        border-right: none;
+      }
+    }
+    &__actions {
+      margin-top: 10px;
+      display: flex;
+      justify-content: flex-end;
+    }
+  }
+}
+@media only screen and (max-width: 900px) {
+  .garden-item {
+    width: 50%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-radius: 10px;
+    background-color: white;
+    padding: 0px;
+    margin-bottom: 20px;
+    &__img {
+      width: 100%;
+      margin: 0px;
+      padding: 0px;
+      img {
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        width: 100%;
+        height: 100%;
+        margin: 0px;
+      }
+    }
+    &__content {
+      padding: 5px 5px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      &__title {
+        color: $color-primary-black-light;
+        font-family: $primary-font;
+        font-weight: 500;
+        padding: 0px 10px;
+        margin-bottom: 10px;
+      }
+      &__mid {
+        display: flex;
+        flex-direction: column;
+        p {
+          padding: 0px 10px;
+          border-right: none;
+          color: $color-primary-black-light;
+          font-family: $btn-fonts;
+          font-weight: 400;
+          margin: 0px;
+          margin-bottom: 10px;
+          span {
+            font-family: $primary-font;
+            font-weight: 500;
+          }
+        }
+        p:last-child {
+          padding: 0px 10px;
+          border-right: none;
+        }
+      }
+    }
+  }
+}
+@media only screen and (max-width: 600px) {
+  .garden-item {
+    width: 220px;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-radius: 10px;
+    background-color: white;
+    padding: 0px;
+    margin-bottom: 20px;
+    &__img {
+      width: 100%;
+      margin: 0px;
+      padding: 0px;
+      border-radius: 10px;
+      img {
+        width: 100%;
+        height: 100%;
+        margin: 0px;
+      }
+    }
+    &__content {
+      padding: 5px 5px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      &__title {
+        color: $color-primary-black-light;
+        font-family: $primary-font;
+        font-weight: 500;
+        padding: 0px 10px;
+        margin: 0px;
+        margin-bottom: 5px;
+      }
+      &__mid {
+        display: flex;
+        flex-direction: column;
+        p {
+          padding: 0px 10px;
+          margin: 0px;
+          margin-bottom: 5px;
+          border-right: none;
+          color: $color-primary-black-light;
+          font-family: $btn-fonts;
+          font-weight: 400;
+          span {
+            font-family: $primary-font;
+            font-weight: 500;
+          }
+        }
+        p:last-child {
+          padding: 0px 10px;
+          border-right: none;
+        }
+      }
+    }
+  }
+}

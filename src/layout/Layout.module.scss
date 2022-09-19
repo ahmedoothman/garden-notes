@@ -2,11 +2,42 @@
 
 .main {
   color: $color-primary-blue;
-  background-color: $color-primary-blue-transparent;
-  height: 100vh; /*don't forget to edit it*/
-  width: 100%;
+  background-color: $color-primary-grey;
+  min-height: 100vh;
+  height: auto; /*don't forget to edit it*/
+  width: calc(100% - 300px);
+  position: absolute;
+  right: 0px;
+  transition: all 0.4s;
+}
+.main-max {
+  color: $color-primary-blue;
+  background-color: $color-primary-grey;
+  min-height: 100vh;
+  height: auto; /*don't forget to edit it*/
+  width: calc(100% - 80px);
+  position: absolute;
+  right: 0px;
+  transition: all 0.4s;
 }
 .layout-container {
   display: flex;
   flex-direction: row;
+}
+@media only screen and (max-width: 900px) {
+  .main {
+    color: $color-primary-blue;
+    background-color: $color-primary-grey;
+    min-height: 100vh;
+    height: auto; /*don't forget to edit it*/
+    width: calc(100% - 80px);
+    overflow: scroll;
+  }
+  .main-max {
+    color: $color-primary-blue;
+    background-color: $color-primary-grey;
+    height: 100vh; /*don't forget to edit it*/
+    width: calc(100% - 80px);
+    overflow: scroll;
+  }
 }

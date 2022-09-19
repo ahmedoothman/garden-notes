@@ -1,0 +1,18 @@
+.garden-list {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  width: 820px;
+  margin: 0 auto;
+}
+
+@media only screen and (max-width: 900px) {
+  .garden-list {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 90%;
+    margin: 0 auto;
+  }
+}

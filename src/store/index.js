@@ -2,8 +2,8 @@ import { createSlice, configureStore } from '@reduxjs/toolkit';
 
 const initialAuthUiSlice = {
   navIsShown: true,
-  sideNavISMin: false,
-  activeTab: 'garden',
+  sideNavISMin: true,
+  activeTab: 'Garden',
 };
 const authUiSlice = createSlice({
   name: 'auth',
@@ -19,13 +19,13 @@ const authUiSlice = createSlice({
       state.sideNavISMin = !state.sideNavISMin;
     },
     setGardenActive(state) {
-      state.activeTab = 'garden';
+      state.activeTab = 'Garden';
     },
     setInventoryActive(state) {
-      state.activeTab = 'inventory';
+      state.activeTab = 'Inventory';
     },
     setNotesActive(state) {
-      state.activeTab = 'notes';
+      state.activeTab = 'Notes';
     },
   },
 });

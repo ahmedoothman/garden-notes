@@ -86,7 +86,7 @@
       background-color: $color-primary-grey-transparent;
       border-radius: 10px;
       width: 90%;
-      min-height: 100px;
+      min-height: 520px;
       height: auto;
     }
     .auth-header {
@@ -111,6 +111,7 @@
       padding: 0px;
       &__wrapper {
         width: 70%;
+        min-height: 300px;
         height: auto;
       }
       &__nav {

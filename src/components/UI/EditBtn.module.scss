@@ -1,0 +1,29 @@
+@import '../../sass/main.scss';
+
+.edit-btn {
+  background-color: $color-primary-black-light;
+  padding: 5px;
+  margin: 0px;
+  width: 30px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.4s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  img {
+    width: 19px;
+  }
+}
+.edit-btn:hover {
+  background-color: $color-primary-black-light;
+  padding: 5px;
+  margin: 0px;
+  border: none;
+  border-radius: 5px;
+  transform: translateY(-1px);
+  img {
+    width: 19px;
+  }
+}
