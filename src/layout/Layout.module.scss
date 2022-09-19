@@ -30,14 +30,14 @@
     background-color: $color-primary-grey;
     min-height: 100vh;
     height: auto; /*don't forget to edit it*/
-    width: calc(100% - 80px);
+    width: calc(100% - 60px);
     overflow: scroll;
   }
   .main-max {
     color: $color-primary-blue;
     background-color: $color-primary-grey;
     height: 100vh; /*don't forget to edit it*/
-    width: calc(100% - 80px);
+    width: calc(100% - 60px);
     overflow: scroll;
   }
 }
