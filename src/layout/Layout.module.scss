@@ -30,13 +30,32 @@
     background-color: $color-primary-grey;
     min-height: 100vh;
     height: auto; /*don't forget to edit it*/
+    width: calc(100% - 80px);
+    overflow: scroll;
+  }
+  .main-max {
+    color: $color-primary-blue;
+    background-color: $color-primary-grey;
+    min-height: 100vh;
+    height: auto; /*don't forget to edit it*/
+    width: calc(100% - 80px);
+    overflow: scroll;
+  }
+}
+@media only screen and (max-width: 600px) {
+  .main {
+    color: $color-primary-blue;
+    background-color: $color-primary-grey;
+    min-height: 100vh;
+    height: auto; /*don't forget to edit it*/
     width: calc(100% - 60px);
     overflow: scroll;
   }
   .main-max {
     color: $color-primary-blue;
     background-color: $color-primary-grey;
-    height: 100vh; /*don't forget to edit it*/
+    min-height: 100vh;
+    height: auto; /*don't forget to edit it*/
     width: calc(100% - 60px);
     overflow: scroll;
   }

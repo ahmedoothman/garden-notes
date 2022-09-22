@@ -9,10 +9,8 @@ const Layout = (props) => {
   useEffect(() => {
     if (isMin) {
       setMainClass(classes['main-max']);
-      console.log('min');
     } else {
       setMainClass(classes['main']);
-      console.log('max');
     }
   }, [isMin]);
   return (

@@ -1,0 +1,177 @@
+@import '../../sass/main.scss';
+.form-container {
+  display: flex;
+  justify-content: space-between;
+  .info-col {
+    flex-grow: 1;
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+  }
+  .form-control {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+    &:last-child {
+      margin-bottom: 0px;
+    }
+    label {
+      font-family: $btn-fonts;
+      font-weight: 500;
+      margin-bottom: 5px;
+    }
+    input {
+      width: 200px;
+      height: 30px;
+      border: none;
+      padding: 3px 10px;
+      border: 2px solid $color-primary-grey;
+      background-color: $color-primary-grey;
+      border-radius: 5px;
+      font-family: $btn-fonts;
+      color: $color-primary-black-dark;
+      font-weight: 400;
+      transition: all 0.4s;
+      &:focus,
+      &:active {
+        outline: none;
+        border: 2px solid $color-primary-black-light;
+      }
+    }
+    textarea {
+      width: 250px;
+      height: 120px;
+      border: 2px solid $color-primary-grey;
+      padding: 3px 10px;
+      background-color: $color-primary-grey;
+      border-radius: 5px;
+      font-family: $btn-fonts;
+      color: $color-primary-black-dark;
+      font-weight: 400;
+      transition: all 0.4s;
+      &:focus,
+      &:active {
+        outline: none;
+        border: 2px solid $color-primary-black-light;
+      }
+    }
+    .file-input {
+      padding-top: 10px;
+      width: 250px;
+    }
+    button {
+      width: 250px;
+      padding: 0;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: none;
+      border-radius: 5px;
+      background-color: $color-primary-black-light;
+      color: white;
+      font-family: $btn-fonts;
+      font-weight: 600;
+      transition: all 0.4s;
+      img {
+        width: 20px;
+        margin-right: 10px;
+      }
+    }
+    button:hover {
+      background-color: $color-primary-black-dark;
+    }
+  }
+}
+@media only screen and (max-width: 650px) {
+  .form-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    .info-col {
+      flex-grow: 1;
+      margin: 5px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      align-items: center;
+    }
+    .form-control {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 5px;
+      &:last-child {
+        margin-bottom: 0px;
+      }
+      label {
+        font-family: $btn-fonts;
+        font-weight: 500;
+        margin-bottom: 5px;
+      }
+      input {
+        width: 200px;
+        height: 25px;
+        border: none;
+        padding: 3px 10px;
+        border: 2px solid $color-primary-grey;
+        background-color: $color-primary-grey;
+        border-radius: 5px;
+        font-family: $btn-fonts;
+        color: $color-primary-black-dark;
+        font-weight: 400;
+        transition: all 0.4s;
+        &:focus,
+        &:active {
+          outline: none;
+          border: 2px solid $color-primary-black-light;
+        }
+      }
+      textarea {
+        width: 200px;
+        height: 60px;
+        border: 2px solid $color-primary-grey;
+        padding: 3px 10px;
+        background-color: $color-primary-grey;
+        border-radius: 5px;
+        font-family: $btn-fonts;
+        color: $color-primary-black-dark;
+        font-weight: 400;
+        transition: all 0.4s;
+        &:focus,
+        &:active {
+          outline: none;
+          border: 2px solid $color-primary-black-light;
+        }
+      }
+      .file-input {
+        padding-top: 10px;
+        width: 200px;
+      }
+      button {
+        width: 180px;
+        padding: 0;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: none;
+        border-radius: 5px;
+        background-color: $color-primary-black-light;
+        color: white;
+        font-family: $btn-fonts;
+        font-weight: 600;
+        transition: all 0.4s;
+        img {
+          width: 20px;
+          margin: 0;
+          margin-right: 10px;
+        }
+      }
+      button:hover {
+        background-color: $color-primary-black-dark;
+      }
+    }
+  }
+}

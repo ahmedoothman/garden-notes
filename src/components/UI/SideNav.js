@@ -21,6 +21,7 @@ const SideNav = (props) => {
   const navigate = useNavigate();
   const [cookies, setCookies, removeCookies] = useCookies(['user']);
   const [isNavMin, setIsNavMin] = useState(Cookies.get('navIsMin'));
+  const [userImg, setUserImg] = useState(Cookies.get('photo'));
   const sideNavISMin = useSelector((state) => state.authUi.sideNavISMin);
   const tabActive = useSelector((state) => state.authUi.activeTab);
   const [sideNavClass, setSideNavClass] = useState('side-nav');
@@ -90,12 +91,12 @@ const SideNav = (props) => {
           className={classes[`${sideNavClass}__bottom__tog`]}
           onClick={toogleMenu}
         >
-          {!sideNavISMin && (
+          {sideNavISMin && (
             <div className={classes[`${sideNavClass}__bottom__toggle`]}>
               <img src={next} />
             </div>
           )}
-          {sideNavISMin && (
+          {!sideNavISMin && (
             <div className={classes[`${sideNavClass}__bottom__toggle`]}>
               <img src={prev} />
             </div>
@@ -103,7 +104,11 @@ const SideNav = (props) => {
         </div>
         <div className={classes[`${sideNavClass}__bottom__user`]}>
           {/* https://gardennotes.herokuapp.com/api/img/users/default.jpeg */}
-          <img src={user} alt='user' />
+          <img
+            src={`https://gardennotes.herokuapp.com/api/img/users/${userImg}`}
+            alt='user'
+            crossorigin='anonymous'
+          />
           <h2>{props.user.name}</h2>
         </div>
         <hr />

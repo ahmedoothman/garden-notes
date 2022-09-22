@@ -8,7 +8,7 @@ import Cookies from 'js-cookie';
 import classes from './Dashboard.module.scss';
 import SearchBar from '../components/UI/SearchBar';
 import SearchTabs from '../components/UI/SearchTabs';
-import { type } from '@testing-library/user-event/dist/type';
+
 /*  */
 const Dashboard = () => {
   const navigate = useNavigate();
