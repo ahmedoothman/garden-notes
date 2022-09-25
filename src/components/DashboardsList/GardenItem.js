@@ -1,14 +1,17 @@
 import classes from './GardenItem.module.scss';
-import flowerImg from '../../img/flower.png';
 import DeleteBtn from '../UI/DeleteBtn';
 import EditBtn from '../UI/EditBtn';
 import CompLoadSpin from '../UI/CompLoadSpin ';
 const GardenItem = (props) => {
   const lastFertilizedDate = new Date(props.data.lastFertilizedDate);
+
   const plantDate = new Date(props.data.plantDate);
 
   const deleteHandler = async () => {
     await props.onDelete(props.data._id);
+  };
+  const editHandler = async () => {
+    props.onEdit(props.data);
   };
   return (
     <div className={classes['garden-item']}>
@@ -23,11 +26,14 @@ const GardenItem = (props) => {
         </div>
         <div className={classes['garden-item__content__mid']}>
           <p>
-            <span>Plant Date :</span> {plantDate.toDateString()}
+            <span>Plant Date :</span>{' '}
+            {!props.data.plantDate ? 'No Date' : plantDate.toDateString()}
           </p>
           <p>
             <span>Last Fertilized Date:</span>{' '}
-            {lastFertilizedDate.toDateString()}
+            {!props.data.lastFertilizedDate
+              ? 'No Date'
+              : lastFertilizedDate.toDateString()}
           </p>
           <p>
             <span>Fertilize Type :</span>
@@ -43,9 +49,9 @@ const GardenItem = (props) => {
           </p>
         </div>
         <div className={classes['garden-item__content__actions']}>
-          {props.deletePending && <CompLoadSpin />}
+          {props.isPending && <CompLoadSpin />}
           <DeleteBtn onDelete={deleteHandler} />
-          <EditBtn />
+          <EditBtn onEdit={editHandler} />
         </div>
       </div>
     </div>

@@ -1,69 +1,175 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import classes from './AddGardenForm.module.scss';
 import Modal from './Modal';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import ImageUploading from 'react-images-uploading';
 import addWhite from '../../img/addWhite.png';
+import closeImg from '../../img/close.png';
+import errorIcon from '../../img/alert.png';
+import ComplLoadSpin from './CompLoadSpin ';
 const AddGardenForm = (props) => {
   const dateNow = new Date();
-
-  const [fertilizeDate, setFertilizeDate] = useState(dateNow);
-  const [plantDate, setPlantDate] = useState(dateNow);
+  const [isPending, setIsPending] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [isError, setIsError] = useState(false);
+  const [fertilizeDate, setFertilizeDate] = useState('');
+  const [plantDate, setPlantDate] = useState('');
   const [nameHolder, setNameHolder] = useState('');
   const [soil, setSoil] = useState('');
   const [fertilizetype, setFertilizetype] = useState('');
+  const [imgFile, setImgFile] = useState(null);
+  const [notesHolder, setNotesHolder] = useState('');
+  const NameRef = useRef('');
+  const SoilRef = useRef();
+  const fertilizedTypeRef = useRef();
+  const notesRef = useRef();
+  useEffect(() => {
+    if (props.data.name) {
+      setNameHolder(props.data.name);
+    }
+    if (props.data.soil) {
+      setSoil(props.data.soil);
+    }
+    if (props.data.fertilizedType) {
+      setFertilizetype(props.data.fertilizedType);
+    }
+    if (props.data.note) {
+      setNotesHolder(props.data.note);
+    }
+    if (props.data.plantDate) {
+      setPlantDate(new Date(props.data.plantDate));
+    }
+    if (props.data.lastFertilizedDate) {
+      setFertilizeDate(new Date(props.data.lastFertilizedDate));
+    }
+  }, []);
 
+  /* ************************************** */
+  /* Image File Handler */
+  /* ************************************** */
+  const imgFileHandler = (event) => {
+    setImgFile(event.target.files[0]);
+  };
+  /* ************************************** */
+  /* Submit Handler */
+  /* ************************************** */
+  const submitHandler = async (event) => {
+    event.preventDefault();
+    /* Save the Data in object*/
+    const dataObj = {
+      name: NameRef.current.value,
+      soil: SoilRef.current.value,
+      fertilizeType: fertilizedTypeRef.current.value,
+      notes: notesRef.current.value,
+      fertilizeDate: fertilizeDate,
+      plantDate: plantDate,
+      type: 'flowers',
+    };
+    if (props.type == 'add' && !dataObj.name) {
+      setIsError(true);
+      setErrorMessage('Garden Plant Must Have a Name');
+      return;
+    }
+    /* Send the data to the Function */
+    try {
+      setIsPending(true);
+      if (props.type === 'add') {
+        await props.sendDataItem(dataObj, imgFile);
+      } else {
+        await props.editDataItem(dataObj, imgFile);
+      }
+      /* Close pop up on finish if done*/
+      await props.updateDataItems();
+      props.closePopUp();
+    } catch (error) {
+      /* Display error message */
+      setIsError(true);
+      setErrorMessage(error.response.data.message);
+    }
+    setIsPending(false);
+  };
   return (
-    <Modal>
-      <form className={classes['form-container']}>
+    <Modal onClose={props.closePopUp}>
+      <div className={classes['close-container']}>
+        <img src={closeImg} onClick={props.closePopUp} />
+      </div>
+      {isError && (
+        <div className={classes['error-message']}>
+          <img src={errorIcon} />
+          <p>{errorMessage}</p>
+        </div>
+      )}
+      <form className={classes['form-container']} onSubmit={submitHandler}>
         <div className={classes['info-col']}>
           <div className={classes['form-control']}>
             <label htmlFor='name'>Name</label>
-            <input type='text' id='name' placeholder={`${nameHolder || ''}`} />
+            <input
+              type='text'
+              id='name'
+              placeholder={`${nameHolder}`}
+              ref={NameRef}
+            />
           </div>
           <div className={classes['form-control']}>
             <label htmlFor='soil'>Soil</label>
-            <input type='text' id='soil' placeholder={`${soil || ''}`} />
+            <input
+              type='text'
+              id='soil'
+              placeholder={`${soil}`}
+              ref={SoilRef}
+            />
           </div>
           <div className={classes['form-control']}>
             <label htmlFor='fertilizeDate'>Fertilize Type</label>
             <input
               type='text'
               id='fertilizeDate'
-              placeholder={`${fertilizetype || ''}`}
+              placeholder={`${fertilizetype}`}
+              ref={fertilizedTypeRef}
             />
           </div>
           <div className={classes['form-control']}>
             <label htmlFor='name'>Fertilize Date</label>
             <DatePicker
               selected={fertilizeDate}
-              onChange={(date) => setStartDate(date)}
+              onChange={(date) => setFertilizeDate(date)}
             />
           </div>
           <div className={classes['form-control']}>
             <label htmlFor='name'>Plant Date</label>
             <DatePicker
               selected={plantDate}
-              onChange={(date) => setStartDate(date)}
+              onChange={(date) => setPlantDate(date)}
             />
           </div>
-          <div className={classes['form-control']}></div>
         </div>
         <div className={classes['info-col']}>
+          <div className={classes['types-conatiner']}></div>
           <div className={classes['form-control']}>
             <label htmlFor='name'>Notes</label>
-            <textarea />
+            <textarea ref={notesRef} placeholder={notesHolder} />
           </div>
+          <div className={classes['form-control']}></div>
           <div className={classes['form-control']}>
             <label htmlFor='name'>Image</label>
-            <input type='file' className={classes['file-input']} />
+            <input
+              type='file'
+              className={classes['file-input']}
+              onChange={imgFileHandler}
+            />
           </div>
           <div className={classes['form-control']}>
-            <button>
-              <img src={addWhite} />
-              <p>Add to Garden</p>
-            </button>
+            {!isPending && (
+              <button className={classes['add-btn-form']}>
+                <img src={addWhite} />
+                {props.btnTitle}
+              </button>
+            )}
+            {isPending && (
+              <button className={classes['add-btn-form']}>
+                <ComplLoadSpin />
+              </button>
+            )}
           </div>
         </div>
       </form>

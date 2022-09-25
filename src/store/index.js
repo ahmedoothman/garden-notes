@@ -2,7 +2,7 @@ import { createSlice, configureStore } from '@reduxjs/toolkit';
 
 const initialAuthUiSlice = {
   navIsShown: true,
-  sideNavISMin: true,
+  sideNavISMin: false,
   activeTab: 'Garden',
 };
 const authUiSlice = createSlice({

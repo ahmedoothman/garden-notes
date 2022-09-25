@@ -1,13 +1,11 @@
 import { Fragment } from 'react';
-import { useState, useEffect, useCallback, useReducer } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import Layout from '../layout/Layout';
 import { Outlet } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { NavLink, useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import classes from './Dashboard.module.scss';
-import SearchBar from '../components/UI/SearchBar';
-import SearchTabs from '../components/UI/SearchTabs';
 
 /*  */
 const Dashboard = () => {
@@ -16,6 +14,7 @@ const Dashboard = () => {
   const [nameCookie, setNameCookie] = useState(Cookies.get('name'));
   const [photoCookie, setPhotoCookie] = useState(Cookies.get('photo'));
   const [emailCookie, setEmailCookie] = useState(Cookies.get('email'));
+  let titleContent = useSelector((state) => state.authUi.activeTab);
   const userData = {
     name: nameCookie,
     photo: photoCookie,
@@ -26,10 +25,10 @@ const Dashboard = () => {
   useEffect(() => {
     if (!isLoggedIn) {
       navigate('/authentication/sign-in', { replace: true });
+      return;
     }
     navigate('garden', { replace: true });
   }, [isLoggedIn]);
-  let titleContent = useSelector((state) => state.authUi.activeTab);
 
   return (
     <Fragment>
@@ -39,14 +38,7 @@ const Dashboard = () => {
         </div>
 
         {/* Search Bar */}
-        <SearchBar
-          config={{
-            type: 'search',
-            placeholder: `Search in ${titleContent} ..`,
-          }}
-        />
-        {/* search tabs */}
-        <SearchTabs tabs={['Flowers', 'Trees', 'Vegetables']} />
+
         <Outlet />
       </Layout>
     </Fragment>

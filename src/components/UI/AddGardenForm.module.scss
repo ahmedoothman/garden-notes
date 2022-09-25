@@ -41,7 +41,7 @@
       }
     }
     textarea {
-      width: 250px;
+      width: 200px;
       height: 120px;
       border: 2px solid $color-primary-grey;
       padding: 3px 10px;
@@ -57,13 +57,14 @@
         border: 2px solid $color-primary-black-light;
       }
     }
+
     .file-input {
       padding-top: 10px;
-      width: 250px;
+      width: 200px;
     }
-    button {
-      width: 250px;
-      padding: 0;
+    .add-btn-form {
+      width: 200px;
+      padding: 10px;
       cursor: pointer;
       display: flex;
       justify-content: center;
@@ -80,11 +81,39 @@
         margin-right: 10px;
       }
     }
-    button:hover {
+    .add-btn-form:hover {
       background-color: $color-primary-black-dark;
     }
   }
 }
+.close-container {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  img {
+    width: 20px;
+    cursor: pointer;
+  }
+}
+.error-message {
+  background-color: $color-primary-red;
+  padding: 0px 10px;
+  border-radius: 5px;
+  color: white;
+  margin: 0 auto;
+  margin-bottom: 0px;
+  font-size: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 218px;
+  transition: all 0.3s;
+  img {
+    width: 20px;
+    margin-right: 12px;
+  }
+}
+
 @media only screen and (max-width: 650px) {
   .form-container {
     display: flex;
@@ -98,6 +127,7 @@
       justify-content: space-around;
       align-items: center;
     }
+
     .form-control {
       display: flex;
       flex-direction: column;
@@ -132,7 +162,7 @@
         width: 200px;
         height: 60px;
         border: 2px solid $color-primary-grey;
-        padding: 3px 10px;
+        padding: 10px;
         background-color: $color-primary-grey;
         border-radius: 5px;
         font-family: $btn-fonts;
@@ -149,9 +179,9 @@
         padding-top: 10px;
         width: 200px;
       }
-      button {
+      .add-btn-form {
         width: 180px;
-        padding: 0;
+        padding: 5px 20px;
         cursor: pointer;
         display: flex;
         justify-content: center;
@@ -169,9 +199,29 @@
           margin-right: 10px;
         }
       }
-      button:hover {
+      .add-btn-form:hover {
         background-color: $color-primary-black-dark;
       }
+    }
+  }
+  .error-message {
+    background-color: $color-primary-red;
+    padding: 0px 5px;
+    border-radius: 5px;
+    color: white;
+    margin: 0 auto;
+    margin-bottom: 0px;
+    font-size: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: auto;
+    max-width: 200px;
+    transition: all 0.3s;
+    img {
+      width: 15px;
+      margin-right: 12px;
     }
   }
 }

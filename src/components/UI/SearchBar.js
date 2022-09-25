@@ -27,6 +27,7 @@ const SearchBar = React.forwardRef((props, ref) => {
           onFocus={focusHandlerActive}
           onBlur={focusHandlerDisable}
           ref={inputRef}
+          onChange={props.typing}
         />
         <div className={classes['form-control__img']}>
           <img src={iconSrc} />

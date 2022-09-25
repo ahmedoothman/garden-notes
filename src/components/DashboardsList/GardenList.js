@@ -1,20 +1,44 @@
 import classes from './GardenList.module.scss';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import Cookies from 'js-cookie';
 import axios from 'axios';
+import FormData from 'form-data';
 import GardenItem from './GardenItem';
 import AddBtn from '../UI/AddBtn';
 import CompLoadSpinBig from '../UI/CompLoadSpinBig';
 import AddGardenForm from '../UI/AddGardenForm';
-const GardenList = () => {
-  const [gardenItems, setGardenItems] = useState([]);
-  const [isDeletePending, setIsDeletePending] = useState(false);
-  const [isFetchPending, setIsFetchPending] = useState(true);
-  const token = Cookies.get('token');
+import errorIcon from '../../img/warning.png';
+import SearchBar from '../UI/SearchBar';
+import SearchTabs from '../UI/SearchTabs';
+import { useSelector } from 'react-redux';
 
+const GardenList = () => {
+  let titleContent = useSelector((state) => state.authUi.activeTab);
+  const [tokenExists, setTokenExists] = useState(Cookies.get('token'));
+  const [dataItems, setdataItems] = useState([]);
+  const [isPending, setIsPending] = useState(false);
+  const [isFetchPending, setIsFetchPending] = useState(false);
+  const [showAddPopUP, setShowAddPopUP] = useState(false);
+  const [showEditPopUP, setShowEditPopUP] = useState(false);
+  const [dataEditObj, setDataEditObj] = useState({});
+  const [errorMessage, setErrorMessage] = useState();
+  const [isError, setIsError] = useState(false);
+  const [itemsContent, setItemsContent] = useState('');
+  const token = Cookies.get('token');
+  const searchRef = useRef();
+  const isLoggedIn = !!tokenExists;
+  useEffect(() => {
+    if (!isLoggedIn) {
+      navigate('/authentication/sign-in', { replace: true });
+      return;
+    }
+  }, [isLoggedIn]);
+  /* ************************************** */
+  /* Delete Item Function */
+  /* ************************************** */
   const deleteItemReq = async (id) => {
     try {
-      setIsDeletePending(true);
+      setIsPending(true);
       const response = await axios.delete(
         `https://gardennotes.herokuapp.com/api/garden/${id}`,
         {
@@ -24,13 +48,116 @@ const GardenList = () => {
         }
       );
     } catch (error) {
-      console.log(error);
       /* Show error message */
+      setIsError(true);
+      setErrorMessage(error.response.data.message);
     }
-    setIsDeletePending(false);
-    await fetchGardenData();
+    setIsPending(false);
+    try {
+      await fetchData();
+    } catch (error) {
+      console.log(error);
+    }
   };
-  const fetchGardenData = async () => {
+  /* ************************************** */
+  /* Edit Item Function */
+  /* ************************************** */
+  const editItemReq = (data) => {
+    setShowEditPopUP(true);
+    setDataEditObj(data);
+  };
+  /* ************************************** */
+  /* Edit Item req Function */
+  /* ************************************** */
+  const editDataItem = async (dataItem, imgFile) => {
+    let data = new FormData();
+    if (dataItem.name) {
+      data.append('name', dataItem.name);
+    }
+    if (dataItem.plantDate) {
+      data.append('plantDate', dataItem.plantDate);
+    }
+    if (dataItem.fertilizeDate) {
+    }
+    if (dataItem.fertilizeDate) {
+      data.append('lastFertilizedDate', dataItem.fertilizeDate);
+    }
+    if (dataItem.fertilizeType) {
+      data.append('fertilizedType', dataItem.fertilizeType);
+    }
+    if (dataItem.soil) {
+      data.append('soil', dataItem.soil);
+    }
+    if (dataItem.notes) {
+      data.append('note', dataItem.notes);
+    }
+    if (imgFile) {
+      data.append('photo', imgFile);
+    }
+    data.append('Type', 'flowers');
+
+    const response = await axios.patch(
+      `https://gardennotes.herokuapp.com/api/garden/${dataEditObj._id}`,
+      data,
+      {
+        headers: {
+          Accept: '*/*',
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    try {
+      await fetchData();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  /* ************************************** */
+  /* send Item Data */
+  /* ************************************** */
+  const sendDataItem = async (dataItem, imgFile) => {
+    let data = new FormData();
+    if (dataItem.name) {
+      data.append('name', dataItem.name);
+    }
+    if (dataItem.plantDate) {
+      data.append('plantDate', dataItem.plantDate);
+    }
+    if (dataItem.fertilizeDate) {
+    }
+    if (dataItem.fertilizeDate) {
+      data.append('lastFertilizedDate', dataItem.fertilizeDate);
+    }
+    if (dataItem.fertilizeType) {
+      data.append('fertilizedType', dataItem.fertilizeType);
+    }
+    if (dataItem.soil) {
+      data.append('soil', dataItem.soil);
+    }
+    if (dataItem.notes) {
+      data.append('note', dataItem.notes);
+    }
+    if (imgFile) {
+      data.append('photo', imgFile);
+    }
+    data.append('Type', 'flowers');
+
+    const response = await axios.post(
+      'https://gardennotes.herokuapp.com/api/garden/',
+      data,
+      {
+        headers: {
+          Accept: '*/*',
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+  };
+  /* ************************************** */
+  /* fetch Item Data */
+  /* ************************************** */
+  const fetchData = async () => {
     try {
       setIsFetchPending(true);
       const response = await axios.get(
@@ -41,33 +168,128 @@ const GardenList = () => {
           },
         }
       );
-      setGardenItems(response.data.data.data);
+      setdataItems(response.data.data.data);
       setIsFetchPending(false);
     } catch (error) {
-      console.log(error.response.data);
       /* Show Error Message */
+      setIsError(true);
+      setErrorMessage(error.response.data.message);
     }
   };
+  /* ************************************** */
+  /* Load Data */
+  /* ************************************** */
+  let normalContent;
+  if (dataItems.length > 0) {
+    normalContent = dataItems.map((item) => (
+      <GardenItem
+        data={item}
+        key={item._id}
+        onDelete={deleteItemReq}
+        isPending={isPending}
+        onEdit={editItemReq}
+      />
+    ));
+  } else {
+    normalContent = (
+      <p className={classes['empty-message']}>
+        There is no Plants in Your garden
+      </p>
+    );
+  }
+  const loadData = () => {
+    console.log('loaded');
+  };
+  /* ************************************** */
+  /* Execute The Load Data Function */
+  /* ************************************** */
   useEffect(() => {
     /* Load Data */
     (async () => {
-      await fetchGardenData();
+      await fetchData();
     })();
   }, []);
-  let gardenContent = gardenItems.map((item) => (
-    <GardenItem
-      data={item}
-      key={item._id}
-      onDelete={deleteItemReq}
-      deletePending={isDeletePending}
-    />
-  ));
+
+  /* ************************************** */
+  /* Open Add Pop Up */
+  /* ************************************** */
+  const mainOpenAddHandler = () => {
+    setShowAddPopUP(true);
+  };
+
+  /* ************************************** */
+  /* Close Add Pop Up */
+  /* ************************************** */
+  const mainCloseAddHandler = () => {
+    setShowAddPopUP(false);
+    setShowEditPopUP(false);
+  };
+
+  const searchHandler = (event) => {
+    let itemSearch = event.target.value;
+    itemSearch = itemSearch.toLowerCase();
+    if (dataItems.length > 0) {
+      setItemsContent(
+        dataItems.map((item) => {
+          if (item.name.toLowerCase().includes(itemSearch)) {
+            return (
+              <GardenItem
+                data={item}
+                key={item._id}
+                onDelete={deleteItemReq}
+                isPending={isPending}
+                onEdit={editItemReq}
+              />
+            );
+          }
+        })
+      );
+    }
+  };
+  useEffect(() => {}, []);
+
   return (
-    <div className={classes['garden-list']}>
-      <AddBtn page='Garden' />
+    <div className={classes['item-list']}>
+      <SearchBar
+        config={{
+          type: 'search',
+          placeholder: `Search in ${titleContent} ..`,
+        }}
+        typing={searchHandler}
+        ref={searchRef}
+      />
+      {/* search tabs */}
+      <SearchTabs tabs={['Flowers', 'Trees', 'Vegetables']} />
+      <AddBtn page='Garden' openPopUp={mainOpenAddHandler} />
       {isFetchPending && <CompLoadSpinBig />}
-      {!isFetchPending && gardenContent}
-      {false && <AddGardenForm />}
+      {isError && (
+        <div className={classes['error-message']}>
+          <img src={errorIcon} />
+          <p>{errorMessage}</p>
+        </div>
+      )}
+      {!isFetchPending && !itemsContent ? normalContent : itemsContent}
+      {showAddPopUP && (
+        <AddGardenForm
+          data={{}}
+          closePopUp={mainCloseAddHandler}
+          sendDataItem={sendDataItem}
+          updateDataItems={fetchData}
+          type='add'
+          btnTitle='Add to Garden'
+        />
+      )}
+      {showEditPopUP && (
+        <AddGardenForm
+          data={dataEditObj}
+          closePopUp={mainCloseAddHandler}
+          sendDataItem={sendDataItem}
+          updateDataItems={fetchData}
+          editDataItem={editDataItem}
+          type='edit'
+          btnTitle='Save Changes'
+        />
+      )}
     </div>
   );
 };

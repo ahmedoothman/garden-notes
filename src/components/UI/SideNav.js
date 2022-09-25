@@ -38,7 +38,7 @@ const SideNav = (props) => {
       setlogo(logo);
     }
     /* Check Window Size */
-    if (windowState < 600) {
+    if (windowState < 900) {
       setlogo(logoMin);
       setSideNavClass('side-nav-min');
     }
@@ -107,7 +107,6 @@ const SideNav = (props) => {
           <img
             src={`https://gardennotes.herokuapp.com/api/img/users/${userImg}`}
             alt='user'
-            crossorigin='anonymous'
           />
           <h2>{props.user.name}</h2>
         </div>
