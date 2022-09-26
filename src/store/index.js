@@ -24,6 +24,9 @@ const authUiSlice = createSlice({
     setInventoryActive(state) {
       state.activeTab = 'Inventory';
     },
+    setSettingsActive(state) {
+      state.activeTab = '';
+    },
     setNotesActive(state) {
       state.activeTab = 'Notes';
     },

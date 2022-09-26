@@ -27,7 +27,7 @@ const SignInForm = () => {
   const isLoggedIn = !!checkCookies;
   useEffect(() => {
     if (isLoggedIn) {
-      navigate('/dashboard', { replace: true });
+      navigate('/dashboard/garden', { replace: true });
     }
   }, [isLoggedIn]);
 
@@ -88,7 +88,7 @@ const SignInForm = () => {
           response.data.data.user.email
         );
         /* Forward to DashBoard */
-        navigate('/dashboard', { replace: true });
+        navigate('/dashboard/garden', { replace: true });
       } catch (error) {
         setErrorMessage(error.response.data.message);
         setIsvalid(false);

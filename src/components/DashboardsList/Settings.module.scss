@@ -1,0 +1,128 @@
+@import '../../sass/main.scss';
+
+.settings-page {
+  min-height: 90vh;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  form {
+    width: 70%;
+  }
+  hr {
+    background-color: $color-primary-black-light;
+    border: none;
+    height: 2px;
+    width: 50%;
+    margin: 50px 0px;
+  }
+}
+.settings-title {
+  color: $color-primary-black-dark;
+  font-family: $primary-font;
+  font-size: 20px;
+  margin-bottom: 40px;
+}
+
+.settings-btn {
+  background-color: $color-primary-black-light;
+  color: white;
+  padding: 10px 20px;
+  width: 200px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.4s;
+  margin-top: 40px;
+}
+.settings-btn:hover {
+  background-color: $color-primary-black-dark;
+}
+.settings-inputs-container {
+  display: flex;
+  margin: 0 auto;
+  flex-wrap: wrap;
+}
+.input-fields-container {
+  order: 0;
+}
+.input-img-container {
+  margin-right: 50px;
+  flex-grow: 1;
+  order: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  &__img-conatiner {
+    background-color: white;
+    border-radius: 10px;
+    width: 220px;
+    height: 180px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    overflow: hidden;
+    img {
+      width: 100%;
+    }
+  }
+  input {
+    background-color: white;
+    color: $color-primary-black-dark;
+    padding: 10px;
+    border-radius: 10px;
+    width: 200px;
+  }
+}
+
+@media only screen and (max-width: 800px) {
+  .input-fields-container {
+    order: 1;
+  }
+  .input-img-container {
+    flex-grow: 1;
+    order: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    &__img-conatiner {
+      background-color: white;
+      border-radius: 10px;
+      width: 220px;
+      height: 180px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 20px;
+      overflow: hidden;
+      img {
+        width: 100%;
+      }
+    }
+    input {
+      background-color: white;
+      color: $color-primary-black-dark;
+      padding: 10px;
+      border-radius: 10px;
+      width: 200px;
+      margin-bottom: 20px;
+    }
+  }
+  .settings-btn {
+    background-color: $color-primary-black-light;
+    color: white;
+    padding: 10px 20px;
+    width: 200px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.4s;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+  .settings-btn:hover {
+    background-color: $color-primary-black-dark;
+  }
+}

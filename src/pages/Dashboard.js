@@ -27,7 +27,6 @@ const Dashboard = () => {
       navigate('/authentication/sign-in', { replace: true });
       return;
     }
-    navigate('garden', { replace: true });
   }, [isLoggedIn]);
 
   return (

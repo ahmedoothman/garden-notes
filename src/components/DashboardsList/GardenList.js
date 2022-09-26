@@ -11,7 +11,8 @@ import errorIcon from '../../img/warning.png';
 import SearchBar from '../UI/SearchBar';
 import SearchTabs from '../UI/SearchTabs';
 import { useSelector } from 'react-redux';
-
+import { authUiActions } from '../../store/index';
+import { useDispatch } from 'react-redux';
 const GardenList = () => {
   let titleContent = useSelector((state) => state.authUi.activeTab);
   const [tokenExists, setTokenExists] = useState(Cookies.get('token'));
@@ -27,11 +28,13 @@ const GardenList = () => {
   const token = Cookies.get('token');
   const searchRef = useRef();
   const isLoggedIn = !!tokenExists;
+  const dispatch = useDispatch();
   useEffect(() => {
     if (!isLoggedIn) {
       navigate('/authentication/sign-in', { replace: true });
       return;
     }
+    dispatch(authUiActions.setGardenActive());
   }, [isLoggedIn]);
   /* ************************************** */
   /* Delete Item Function */

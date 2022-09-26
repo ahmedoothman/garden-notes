@@ -9,7 +9,6 @@ import logoMin from '../../img/logo_white_side-min.png';
 import garden from '../../img/garden.png';
 import inventory from '../../img/checklists.png';
 import note from '../../img/writing.png';
-import user from '../../img/user-account.png';
 import settings from '../../img/setting.png';
 import logout from '../../img/logout.png';
 import prev from '../../img/prev.png';
@@ -60,6 +59,18 @@ const SideNav = (props) => {
       expires: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000),
     });
   };
+  const navToSettings = () => {
+    navigate('/dashboard/settings');
+  };
+  const navToGarden = () => {
+    navigate('/dashboard/garden');
+  };
+  const navToInventory = () => {
+    navigate('/dashboard/inventory');
+  };
+  const navToNotes = () => {
+    navigate('/dashboard/notes');
+  };
   return (
     <div className={classes[sideNavClass]}>
       <div className={classes[`${sideNavClass}__top`]}>
@@ -69,17 +80,17 @@ const SideNav = (props) => {
         <div className={classes[`${sideNavClass}__top__menu`]}>
           <ul>
             <li className={tabActive === 'Garden' ? classes['tab-active'] : ''}>
-              <img src={garden} />
+              <img src={garden} onClick={navToGarden} />
               <NavLink to='garden'>Garden</NavLink>
             </li>
             <li
               className={tabActive === 'Inventory' ? classes['tab-active'] : ''}
             >
-              <img src={inventory} />
+              <img src={inventory} onClick={navToInventory} />
               <NavLink to='inventory'>Inventory</NavLink>
             </li>
             <li className={tabActive === 'Notes' ? classes['tab-active'] : ''}>
-              <img src={note} />
+              <img src={note} onClick={navToNotes} />
               <NavLink to='notes'>Notes</NavLink>
             </li>
           </ul>
@@ -114,7 +125,7 @@ const SideNav = (props) => {
         <div className={classes[`${sideNavClass}__bottom__menu`]}>
           <ul>
             <li>
-              <img src={settings} />
+              <img src={settings} onClick={navToSettings} />
               <NavLink to='settings'>Settings</NavLink>
             </li>
             <li onClick={logoutHandler}>
