@@ -172,12 +172,12 @@ const GardenList = () => {
         }
       );
       setdataItems(response.data.data.data);
-      setIsFetchPending(false);
     } catch (error) {
       /* Show Error Message */
       setIsError(true);
       setErrorMessage(error.response.data.message);
     }
+    setIsFetchPending(false);
   };
   /* ************************************** */
   /* Load Data */

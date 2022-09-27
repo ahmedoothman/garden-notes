@@ -19,14 +19,23 @@ const Settings = () => {
   const [Token, setToken] = useState(Cookies.get('token'));
   const [imgInput, setImgInput] = useState(null);
   const [first, setFirst] = useState(true);
+  const [firstPass, setFirstPass] = useState(true);
   const [isInfoUpdated, setIsInfoUpdated] = useState(null);
   const [infoUpdatedSuccessMessage, setInfoUpdatedSuccessMessage] =
     useState('');
   const [infoUpdatedFailedMessage, setInfoUpdatedFailedMessage] = useState('');
+  const [isPasswordUpdated, setIsPasswordUpdated] = useState(false);
+  const [passwordUpdatedSuccessMessage, setPasswordUpdatedSuccessMessage] =
+    useState('');
+  const [passwordUpdatedFailedMessage, setPasswordUpdatedFailedMessage] =
+    useState('');
   const [isEditInfoPending, setIsEditInfoPending] = useState(false);
   const [isChangePasswordPending, setIsChangePasswordPending] = useState(false);
   const NameRef = useRef();
   const EmailRef = useRef();
+  const currentPasswordRef = useRef();
+  const newPasswordRef = useRef();
+  const confirmPasswordRef = useRef();
   useEffect(() => {
     dispatch(authUiActions.setSettingsActive());
   }, []);
@@ -77,6 +86,75 @@ const Settings = () => {
       setInfoUpdatedFailedMessage(error.response.data.message);
     }
     setIsEditInfoPending(false);
+  };
+  const valiatePasswordInputs = (data) => {
+    if (data.passwordCurrent.trim() === '') {
+      setFirstPass(false);
+      setIsPasswordUpdated(false);
+      setPasswordUpdatedFailedMessage('Please Provide the current password');
+      currentPasswordRef.current.activeError();
+      return false;
+    }
+    if (data.password.trim().length < 8) {
+      setFirstPass(false);
+      setIsPasswordUpdated(false);
+      setPasswordUpdatedFailedMessage('Password must be at least 8 digits');
+      newPasswordRef.current.activeError();
+      return false;
+    }
+    if (data.passwordConfirm.trim().length < 8) {
+      setFirstPass(false);
+      setIsPasswordUpdated(false);
+      setPasswordUpdatedFailedMessage('Please Confirm Password');
+      confirmPasswordRef.current.activeError();
+      return false;
+    }
+    if (data.passwordConfirm.trim() !== data.password.trim()) {
+      setFirstPass(false);
+      setIsPasswordUpdated(false);
+      setPasswordUpdatedFailedMessage(`Passwords doesn't match`);
+      confirmPasswordRef.current.activeError();
+      newPasswordRef.current.activeError();
+
+      return false;
+    }
+    return true;
+  };
+  const changePasswordReq = async (data) => {
+    /* Validate Data */
+    const status = valiatePasswordInputs(data);
+    /* Axios */
+    if (status) {
+      try {
+        setIsChangePasswordPending(true);
+        const response = await axios.patch(
+          'https://gardennotes.herokuapp.com/api/users/updateMyPassword',
+          data,
+          {
+            headers: {
+              Authorization: `Bearer ${Token}`,
+            },
+          }
+        );
+        setFirstPass(false);
+        setIsPasswordUpdated(true);
+        setPasswordUpdatedSuccessMessage('Password Successfully changed');
+      } catch (error) {
+        setFirstPass(false);
+        setIsPasswordUpdated(false);
+        setPasswordUpdatedFailedMessage(error.response.data.message);
+      }
+    }
+    setIsChangePasswordPending(false);
+  };
+  const changePasswordHandler = async (event) => {
+    event.preventDefault();
+    const data = {
+      passwordCurrent: currentPasswordRef.current.inputValue,
+      password: newPasswordRef.current.inputValue,
+      passwordConfirm: confirmPasswordRef.current.inputValue,
+    };
+    await changePasswordReq(data);
   };
   const editAccountHandler = async (event) => {
     event.preventDefault();
@@ -154,18 +232,24 @@ const Settings = () => {
           )}
         </form>
         <hr />
-        <form className={classes['password-info']}>
+        <form
+          className={classes['password-info']}
+          onSubmit={changePasswordHandler}
+        >
           <div className={classes['settings-title']}>Change Password</div>
           <div className={classes['settings-inputs-container']}>
             <div className={classes['input-fields-container']}>
               <InputField
                 config={{ type: 'password', placeholder: 'Current Password' }}
+                ref={currentPasswordRef}
               />
               <InputField
                 config={{ type: 'password', placeholder: 'New Password' }}
+                ref={newPasswordRef}
               />
               <InputField
                 config={{ type: 'password', placeholder: 'Confirm Password' }}
+                ref={confirmPasswordRef}
               />
               <button className={classes['settings-btn']}>
                 {!isChangePasswordPending && `Submit`}
@@ -173,6 +257,19 @@ const Settings = () => {
               </button>
             </div>
           </div>
+          <br />
+          {!isPasswordUpdated && !firstPass && (
+            <div className={classes['error-message']}>
+              <img src={errorIcon} />
+              <p>{passwordUpdatedFailedMessage}</p>
+            </div>
+          )}
+          {isPasswordUpdated && !firstPass && (
+            <div className={classes['sucess-message']}>
+              <img src={sucessIcon} />
+              <p> {passwordUpdatedSuccessMessage}</p>
+            </div>
+          )}
         </form>
       </section>
     </Fragment>
