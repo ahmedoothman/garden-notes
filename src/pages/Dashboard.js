@@ -1,10 +1,8 @@
-import { Fragment } from 'react';
-import { useState, useEffect, useCallback, useRef } from 'react';
-import Layout from '../layout/Layout';
-import { Outlet } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { NavLink, useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
+import { Fragment, useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { Outlet, useNavigate } from 'react-router-dom';
+import Layout from '../layout/Layout';
 import classes from './Dashboard.module.scss';
 
 /*  */
