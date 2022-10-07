@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { CookiesProvider } from 'react-cookie';
-
+import reportWebVitals from './reportWebVitals';
 import store from './store/index';
 import './index.scss';
 import App from './App';
@@ -20,3 +20,4 @@ root.render(
     </BrowserRouter>
   </React.StrictMode>
 );
+reportWebVitals();

@@ -81,9 +81,10 @@ const GardenList = () => {
       data.append('plantDate', dataItem.plantDate);
     }
     if (dataItem.fertilizeDate) {
-    }
-    if (dataItem.fertilizeDate) {
       data.append('lastFertilizedDate', dataItem.fertilizeDate);
+    }
+    if (dataItem.wateredDate) {
+      data.append('lastWateredDate', dataItem.wateredDate);
     }
     if (dataItem.fertilizeType) {
       data.append('fertilizedType', dataItem.fertilizeType);
@@ -128,13 +129,15 @@ const GardenList = () => {
       data.append('plantDate', dataItem.plantDate);
     }
     if (dataItem.fertilizeDate) {
-    }
-    if (dataItem.fertilizeDate) {
       data.append('lastFertilizedDate', dataItem.fertilizeDate);
+    }
+    if (dataItem.wateredDate) {
+      data.append('lastWateredDate', dataItem.wateredDate);
     }
     if (dataItem.fertilizeType) {
       data.append('fertilizedType', dataItem.fertilizeType);
     }
+
     if (dataItem.soil) {
       data.append('soil', dataItem.soil);
     }

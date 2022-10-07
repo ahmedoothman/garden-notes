@@ -14,6 +14,7 @@ const AddGardenForm = (props) => {
   const [isError, setIsError] = useState(false);
   const [fertilizeDate, setFertilizeDate] = useState('');
   const [plantDate, setPlantDate] = useState('');
+  const [wateredDate, setWateredDate] = useState('');
   const [nameHolder, setNameHolder] = useState('');
   const [soil, setSoil] = useState('');
   const [fertilizetype, setFertilizetype] = useState('');
@@ -39,6 +40,9 @@ const AddGardenForm = (props) => {
     if (props.data.plantDate) {
       setPlantDate(new Date(props.data.plantDate));
     }
+    if (props.data.wateredDate) {
+      setPlantDate(new Date(props.data.wateredDate));
+    }
     if (props.data.lastFertilizedDate) {
       setFertilizeDate(new Date(props.data.lastFertilizedDate));
     }
@@ -63,6 +67,7 @@ const AddGardenForm = (props) => {
       notes: notesRef.current.value,
       fertilizeDate: fertilizeDate,
       plantDate: plantDate,
+      wateredDate: wateredDate,
       type: 'flowers',
     };
     if (props.type == 'add' && !dataObj.name) {
@@ -145,6 +150,13 @@ const AddGardenForm = (props) => {
         </div>
         <div className={classes['info-col']}>
           <div className={classes['types-conatiner']}></div>
+          <div className={classes['form-control']}>
+            <label htmlFor='name'>Watered Date</label>
+            <DatePicker
+              selected={wateredDate}
+              onChange={(date) => setWateredDate(date)}
+            />
+          </div>
           <div className={classes['form-control']}>
             <label htmlFor='name'>Notes</label>
             <textarea ref={notesRef} placeholder={notesHolder} />

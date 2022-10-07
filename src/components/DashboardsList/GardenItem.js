@@ -2,10 +2,31 @@ import classes from './GardenItem.module.scss';
 import DeleteBtn from '../UI/DeleteBtn';
 import EditBtn from '../UI/EditBtn';
 import CompLoadSpin from '../UI/CompLoadSpin ';
+import { useState, useEffect } from 'react';
+/* set function to calc the days */
+const calcDays = (wateredDate) => {
+  const oneDay = 1000 * 60 * 60 * 24;
+  const dateNow = new Date().getTime();
+  const lastWateredDate = new Date(wateredDate);
+  console.log(wateredDate);
+  const noDays = Math.floor((dateNow - lastWateredDate.getTime()) / oneDay);
+  return noDays;
+};
 const GardenItem = (props) => {
   const lastFertilizedDate = new Date(props.data.lastFertilizedDate);
-
+  const lastWateredDate = new Date(props.data.lastWateredDate);
   const plantDate = new Date(props.data.plantDate);
+  const [daysAgo, setDaysAgo] = useState(99);
+
+  useEffect(() => {
+    console.log();
+    if (props.data.lastWateredDate) {
+      /* Here */
+      setDaysAgo(calcDays(props.data.lastWateredDate));
+    } else {
+      setDaysAgo(0);
+    }
+  }, []);
 
   const deleteHandler = async () => {
     await props.onDelete(props.data._id);
@@ -41,6 +62,13 @@ const GardenItem = (props) => {
           </p>
         </div>
         <div className={classes['garden-item__content__mid']}>
+          <p>
+            <span>Last Watered Date:</span>{' '}
+            {!props.data.lastWateredDate
+              ? 'No Date'
+              : lastWateredDate.toDateString()}
+            <span className={classes['days-number']}>{daysAgo} days</span>
+          </p>
           <p>
             <span>Soil :</span> {props.data.soil}
           </p>
