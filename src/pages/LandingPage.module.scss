@@ -261,7 +261,7 @@
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
-    height: 92vh;
+    height: 100vh;
     &__top-head {
       padding: 10px;
       padding-left: 25px;
@@ -319,6 +319,7 @@
     &__bottom-head {
       height: auto;
       flex-wrap: wrap;
+      margin-bottom: 60px;
       .footer {
         width: 100%;
         font-size: 14px;
