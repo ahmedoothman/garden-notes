@@ -9,7 +9,10 @@ const calcDays = (wateredDate) => {
   const dateNow = new Date().getTime();
   const lastWateredDate = new Date(wateredDate);
   console.log(wateredDate);
-  const noDays = Math.floor((dateNow - lastWateredDate.getTime()) / oneDay);
+  let noDays = Math.floor((dateNow - lastWateredDate.getTime()) / oneDay) - 1;
+  if (noDays < 0) {
+    noDays = 0;
+  }
   return noDays;
 };
 const GardenItem = (props) => {
