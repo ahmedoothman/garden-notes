@@ -8,7 +8,6 @@ const calcDays = (wateredDate) => {
   const oneDay = 1000 * 60 * 60 * 24;
   const dateNow = new Date().getTime();
   const lastWateredDate = new Date(wateredDate);
-  console.log(wateredDate);
   let noDays = Math.floor((dateNow - lastWateredDate.getTime()) / oneDay) - 1;
   if (noDays < 0) {
     noDays = 0;
@@ -70,7 +69,7 @@ const GardenItem = (props) => {
             {!props.data.lastWateredDate
               ? 'No Date'
               : lastWateredDate.toDateString()}
-            <span className={classes['days-number']}>{daysAgo} days</span>
+            <h4 className={classes['days-number']}>{daysAgo} days</h4>
           </p>
           <p>
             <span>Soil :</span> {props.data.soil}
