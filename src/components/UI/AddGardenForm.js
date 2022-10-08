@@ -40,8 +40,8 @@ const AddGardenForm = (props) => {
     if (props.data.plantDate) {
       setPlantDate(new Date(props.data.plantDate));
     }
-    if (props.data.wateredDate) {
-      setPlantDate(new Date(props.data.wateredDate));
+    if (props.data.lastWateredDate) {
+      setWateredDate(new Date(props.data.lastWateredDate));
     }
     if (props.data.lastFertilizedDate) {
       setFertilizeDate(new Date(props.data.lastFertilizedDate));
