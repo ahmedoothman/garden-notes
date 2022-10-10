@@ -39,9 +39,7 @@ const GardenItem = (props) => {
   return (
     <div className={classes['garden-item']}>
       <div className={classes['garden-item__img']}>
-        <img
-          src={`https://gardennotes.herokuapp.com/api/img/gardenItem/${props.data.photo}`}
-        />
+        <img src={props.data.photo} />
       </div>
       <div className={classes['garden-item__content']}>
         <div className={classes['garden-item__content__title']}>
@@ -69,7 +67,7 @@ const GardenItem = (props) => {
             {!props.data.lastWateredDate
               ? 'No Date'
               : lastWateredDate.toDateString()}
-            <h4 className={classes['days-number']}>{daysAgo} days</h4>
+            <b className={classes['days-number']}>{daysAgo} days</b>
           </p>
           <p>
             <span>Soil :</span> {props.data.soil}
