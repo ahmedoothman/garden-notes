@@ -233,7 +233,7 @@ const GardenList = () => {
 
   const searchHandler = (event) => {
     let itemSearch = event.target.value;
-    itemSearch = itemSearch.toLowerCase();
+    itemSearch = itemSearch.trim().toLowerCase();
     if (dataItems.length > 0) {
       setItemsContent(
         dataItems.map((item) => {
@@ -252,7 +252,6 @@ const GardenList = () => {
       );
     }
   };
-  useEffect(() => {}, []);
 
   return (
     <div className={classes['item-list']}>
