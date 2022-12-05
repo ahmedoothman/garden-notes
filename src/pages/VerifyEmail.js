@@ -6,7 +6,13 @@ import sucessIcon from '../img/checked.png';
 import axios from 'axios';
 import CompLoadSpinnerBig from '../components/UI/CompLoadSpinBig';
 import { useParams } from 'react-router-dom';
+// react redux
+import { useSelector } from 'react-redux';
+import { authUiActions } from '../store/index';
+
 const VerifyEmail = () => {
+  let api_url = useSelector((state) => state.authUi.url_api);
+
   const [errorMessage, setErrorMessage] = useState('');
   const [isSucess, setIsSucess] = useState(false);
   const [isPending, setisPending] = useState(true);
@@ -15,7 +21,7 @@ const VerifyEmail = () => {
   const sendToken = useCallback(async () => {
     try {
       const response = await axios.patch(
-        `https://gardennotes.herokuapp.com/api/users/verifyEmail/${verifyToken}`
+        `${api_url}/api/users/verifyEmail/${verifyToken}`
       );
       setIsSucess(true);
       console.log(response);

@@ -10,10 +10,12 @@ import AddGardenForm from '../UI/AddGardenForm';
 import errorIcon from '../../img/warning.png';
 import SearchBar from '../UI/SearchBar';
 import SearchTabs from '../UI/SearchTabs';
+// react redux
 import { useSelector } from 'react-redux';
 import { authUiActions } from '../../store/index';
 import { useDispatch } from 'react-redux';
 const GardenList = () => {
+  let api_url = useSelector((state) => state.authUi.url_api);
   let titleContent = useSelector((state) => state.authUi.activeTab);
   const [tokenExists, setTokenExists] = useState(Cookies.get('token'));
   const [dataItems, setdataItems] = useState([]);
@@ -42,14 +44,11 @@ const GardenList = () => {
   const deleteItemReq = async (id) => {
     try {
       setIsPending(true);
-      const response = await axios.delete(
-        `https://gardennotes.herokuapp.com/api/garden/${id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await axios.delete(`${api_url}/api/garden/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
     } catch (error) {
       /* Show error message */
       setIsError(true);
@@ -101,7 +100,7 @@ const GardenList = () => {
     data.append('Type', 'flowers');
 
     const response = await axios.patch(
-      `https://gardennotes.herokuapp.com/api/garden/${dataEditObj._id}`,
+      `${api_url}/api/garden/${dataEditObj._id}`,
       data,
       {
         headers: {
@@ -149,16 +148,12 @@ const GardenList = () => {
     }
     data.append('Type', 'flowers');
 
-    const response = await axios.post(
-      'https://gardennotes.herokuapp.com/api/garden/',
-      data,
-      {
-        headers: {
-          Accept: '*/*',
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    const response = await axios.post(`${api_url}/api/garden/`, data, {
+      headers: {
+        Accept: '*/*',
+        Authorization: `Bearer ${token}`,
+      },
+    });
   };
   /* ************************************** */
   /* fetch Item Data */
@@ -166,14 +161,11 @@ const GardenList = () => {
   const fetchData = async () => {
     try {
       setIsFetchPending(true);
-      const response = await axios.get(
-        'https://gardennotes.herokuapp.com/api/garden/myGarden',
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await axios.get(`${api_url}/api/garden/myGarden`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       setdataItems(response.data.data.data);
     } catch (error) {
       /* Show Error Message */

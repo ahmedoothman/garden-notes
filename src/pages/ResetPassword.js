@@ -1,7 +1,6 @@
 import { Fragment, useState, useRef } from 'react';
 import classes from './ResetPassword.module.scss';
 import wideLogo from '../img/wide-logo-web.png';
-import { useSelector } from 'react-redux';
 import axios from 'axios';
 import InputField from '../components/Auth/InputField';
 import Button from '../components/Auth/Button';
@@ -9,7 +8,12 @@ import CompLoadSpin from '../components/UI/CompLoadSpin ';
 import errorIcon from '../img/warning.png';
 import sucessIcon from '../img/checked.png';
 import { useParams } from 'react-router-dom';
+
+// react redux
+import { authUiActions } from '../store/index';
+import { useSelector } from 'react-redux';
 const ResetPassword = () => {
+  let api_url = useSelector((state) => state.authUi.url_api);
   const passwordInputRef = useRef();
   const passwordConfirmInputRef = useRef();
   const [isSucess, setIsSucess] = useState(false);
@@ -47,7 +51,7 @@ const ResetPassword = () => {
       try {
         setPending(true);
         const response = await axios.patch(
-          `https://gardennotes.herokuapp.com/api/users/resetPassword/${resetToken}`,
+          `${api_url}/api/users/resetPassword/${resetToken}`,
           data
         );
         setIsSucess(true);

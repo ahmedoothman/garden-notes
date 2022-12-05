@@ -2,15 +2,18 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import useCookies from 'react-cookie/cjs/useCookies';
-import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import errorIcon from '../../img/warning.png';
-import { authUiActions } from '../../store/index';
 import CompLoadSpin from '../UI/CompLoadSpin ';
 import Button from './Button';
 import InputField from './InputField';
 import classes from './SignInForm.module.scss';
+// react redux
+import { useDispatch } from 'react-redux';
+import { authUiActions } from '../../store/index';
+import { useSelector } from 'react-redux';
 const SignInForm = () => {
+  let api_url = useSelector((state) => state.authUi.url_api);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -75,10 +78,7 @@ const SignInForm = () => {
     if (inputValid) {
       try {
         setPending(true);
-        const response = await axios.post(
-          'https://gardennotes.herokuapp.com/api/users/login',
-          data
-        );
+        const response = await axios.post(`${api_url}/api/users/login`, data);
         setIsvalid(true);
         /*Set Cookies */
         setCookiesHandler(

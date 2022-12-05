@@ -1,7 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
 import classes from './ForgetPasswordForm.module.scss';
-import { useDispatch } from 'react-redux';
-import { authUiActions } from '../../store/index';
 import axios from 'axios';
 import validator from 'validator';
 import InputField from './InputField';
@@ -9,7 +7,13 @@ import Button from './Button';
 import CompLoadSpin from '../../components/UI/CompLoadSpin ';
 import errorIcon from '../../img/warning.png';
 import sucessIcon from '../../img/checked.png';
+
+// react redux
+import { useSelector } from 'react-redux';
+import { authUiActions } from '../../store/index';
+import { useDispatch } from 'react-redux';
 const ForgetPasswordForm = () => {
+  let api_url = useSelector((state) => state.authUi.url_api);
   const dispatch = useDispatch();
   dispatch(authUiActions.setHidden());
 
@@ -43,7 +47,7 @@ const ForgetPasswordForm = () => {
       try {
         setPending(true);
         const response = await axios.post(
-          'https://gardennotes.herokuapp.com/api/users/forgotPassword',
+          `${api_url}/api/users/forgotPassword`,
           data
         );
         console.log(response.data);

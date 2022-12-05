@@ -4,6 +4,7 @@ const initialAuthUiSlice = {
   navIsShown: true,
   sideNavISMin: false,
   activeTab: 'Garden',
+  url_api: 'https://garden-notes.onrender.com',
 };
 const authUiSlice = createSlice({
   name: 'auth',

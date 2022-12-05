@@ -1,6 +1,4 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { authUiActions } from '../../store/index';
 import { useNavigate } from 'react-router-dom';
 import validator from 'validator';
 import axios from 'axios';
@@ -11,7 +9,14 @@ import Cookies from 'js-cookie';
 import errorIcon from '../../img/warning.png';
 import sucessIcon from '../../img/checked.png';
 import CompLoadSpin from '../UI/CompLoadSpin ';
+
+// React redux
+import { useDispatch } from 'react-redux';
+import { authUiActions } from '../../store/index';
+import { useSelector } from 'react-redux';
 const SignUpForm = () => {
+  let api_url = useSelector((state) => state.authUi.url_api);
+
   const navigate = useNavigate();
 
   const nameInputRef = useRef();
@@ -89,10 +94,7 @@ const SignUpForm = () => {
     if (inputValid) {
       try {
         setPending(true);
-        const response = await axios.post(
-          'https://gardennotes.herokuapp.com/api/users/signup',
-          data
-        );
+        const response = await axios.post(`${api_url}/api/users/signup`, data);
         setIsSucess(true);
       } catch (error) {
         console.log(error.response);

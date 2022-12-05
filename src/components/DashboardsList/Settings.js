@@ -1,7 +1,9 @@
 import classes from './Settings.module.scss';
 import { useEffect, useState } from 'react';
+// react redux
 import { authUiActions } from '../../store';
 import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Fragment } from 'react';
 import InputField from '../Auth/InputField';
 import Cookies from 'js-cookie';
@@ -12,6 +14,7 @@ import errorIcon from '../../img/warning.png';
 import sucessIcon from '../../img/checked.png';
 import FormData from 'form-data';
 const Settings = () => {
+  let api_url = useSelector((state) => state.authUi.url_api);
   const dispatch = useDispatch();
   const [Name, setName] = useState(Cookies.get('name'));
   const [Email, setEmail] = useState(Cookies.get('email'));
@@ -53,7 +56,7 @@ const Settings = () => {
     try {
       setIsEditInfoPending(true);
       const response = await axios.patch(
-        'https://gardennotes.herokuapp.com/api/users/updateMe',
+        `${api_url}/api/users/updateMe`,
         data,
         {
           headers: {
@@ -128,7 +131,7 @@ const Settings = () => {
       try {
         setIsChangePasswordPending(true);
         const response = await axios.patch(
-          'https://gardennotes.herokuapp.com/api/users/updateMyPassword',
+          `${api_url}/api/users/updateMyPassword`,
           data,
           {
             headers: {
@@ -206,9 +209,7 @@ const Settings = () => {
             </div>
             <div className={classes['input-img-container']}>
               <div className={classes['input-img-container__img-conatiner']}>
-                <img
-                  src={`https://gardennotes.herokuapp.com/api/img/users/${Photo}`}
-                />
+                <img src={`${api_url}/api/img/users/${Photo}`} />
               </div>
               <input
                 type='file'
