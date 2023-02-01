@@ -64,9 +64,37 @@ const GardenList = () => {
   /* ************************************** */
   /* Edit Item Function */
   /* ************************************** */
-  const editItemReq = (data) => {
+  const editItemReq = async (data) => {
     setShowEditPopUP(true);
     setDataEditObj(data);
+  };
+  const waterReqHandler = (data, itemID) => {
+    console.log(data);
+    editWateredDate(data, itemID);
+  };
+  /* ************************************** */
+  /* Edit watered Item req Function */
+  /* ************************************** */
+  const editWateredDate = async (dataItem, itemId) => {
+    let data = new FormData();
+    if (dataItem.wateredDate) {
+      data.append('lastWateredDate', dataItem.wateredDate);
+    }
+    const response = await axios.patch(
+      `${api_url}/api/garden/${itemId}`,
+      data,
+      {
+        headers: {
+          Accept: '*/*',
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    try {
+      await fetchData();
+    } catch (error) {
+      console.log(error);
+    }
   };
   /* ************************************** */
   /* Edit Item req Function */
@@ -183,6 +211,7 @@ const GardenList = () => {
       <GardenItem
         data={item}
         key={item._id}
+        onWaterReqHandler={waterReqHandler}
         onDelete={deleteItemReq}
         isPending={isPending}
         onEdit={editItemReq}
@@ -237,6 +266,7 @@ const GardenList = () => {
                 onDelete={deleteItemReq}
                 isPending={isPending}
                 onEdit={editItemReq}
+                onWaterReqHandler={waterReqHandler}
               />
             );
           }

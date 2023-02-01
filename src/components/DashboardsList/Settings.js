@@ -209,7 +209,7 @@ const Settings = () => {
             </div>
             <div className={classes['input-img-container']}>
               <div className={classes['input-img-container__img-conatiner']}>
-                <img src={`${api_url}/api/img/users/${Photo}`} />
+                <img src={`${Photo}`} />
               </div>
               <input
                 type='file'

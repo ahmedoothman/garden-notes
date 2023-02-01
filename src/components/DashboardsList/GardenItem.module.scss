@@ -1,7 +1,7 @@
 @import '../../sass/main.scss';
 .garden-item {
   width: 87%;
-  height: 270px;
+  height: 290px;
   display: flex;
   justify-content: space-between;
   border-radius: 10px;
@@ -9,8 +9,8 @@
   padding: 0px;
   margin-bottom: 20px;
   &__img {
-    width: 35%;
     max-width: 320px;
+    min-width: 280px;
     margin: 0px;
     padding: 0px;
     border-radius: 10px;
@@ -54,7 +54,9 @@
       }
       p:last-child {
         padding: 0px 10px;
+
         border-right: none;
+        width: 25%;
       }
     }
     &__actions {
@@ -85,7 +87,8 @@
     padding: 0px;
     margin-bottom: 20px;
     &__img {
-      width: 100%;
+      max-width: 100%;
+      min-width: 100%;
       margin: 0px;
       padding: 0px;
       img {
@@ -124,6 +127,7 @@
         p:last-child {
           padding: 0px 10px;
           border-right: none;
+          width: 100%;
         }
       }
     }
@@ -141,7 +145,8 @@
     padding: 0px;
     margin-bottom: 20px;
     &__img {
-      width: 100%;
+      max-width: 100%;
+      min-width: 100%;
       margin: 0px;
       padding: 0px;
       border-radius: 10px;
@@ -179,6 +184,7 @@
         p:last-child {
           padding: 0px 10px;
           border-right: none;
+          width: 100%;
         }
       }
     }

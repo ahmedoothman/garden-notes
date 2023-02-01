@@ -115,10 +115,7 @@ const SideNav = (props) => {
         </div>
         <div className={classes[`${sideNavClass}__bottom__user`]}>
           {/* https://gardennotes.herokuapp.com/api/img/users/default.jpeg */}
-          <img
-            src={`https://gardennotes.herokuapp.com/api/img/users/${userImg}`}
-            alt='user'
-          />
+          <img src={`${userImg}`} alt='user' />
           <h2>{props.user.name}</h2>
         </div>
         <hr />

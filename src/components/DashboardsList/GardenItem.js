@@ -1,6 +1,7 @@
 import classes from './GardenItem.module.scss';
 import DeleteBtn from '../UI/DeleteBtn';
 import EditBtn from '../UI/EditBtn';
+import WaterBtn from '../UI/WaterBtn';
 import CompLoadSpin from '../UI/CompLoadSpin ';
 import { useState, useEffect } from 'react';
 /* set function to calc the days */
@@ -34,7 +35,10 @@ const GardenItem = (props) => {
     await props.onDelete(props.data._id);
   };
   const editHandler = async () => {
-    props.onEdit(props.data);
+    await props.onEdit(props.data);
+  };
+  const waterHandler = async (data) => {
+    props.onWaterReqHandler(data, props.data._id);
   };
   return (
     <div className={classes['garden-item']}>
@@ -79,6 +83,7 @@ const GardenItem = (props) => {
         <div className={classes['garden-item__content__actions']}>
           {props.isPending && <CompLoadSpin />}
           <DeleteBtn onDelete={deleteHandler} />
+          <WaterBtn onWater={waterHandler} />
           <EditBtn onEdit={editHandler} />
         </div>
       </div>
