@@ -10,6 +10,9 @@ import AddGardenForm from '../UI/AddGardenForm';
 import errorIcon from '../../img/warning.png';
 import SearchBar from '../UI/SearchBar';
 import SearchTabs from '../UI/SearchTabs';
+// material ui
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
 // react redux
 import { useSelector } from 'react-redux';
 import { authUiActions } from '../../store/index';
@@ -18,6 +21,9 @@ const GardenList = () => {
   let api_url = useSelector((state) => state.authUi.url_api);
   let titleContent = useSelector((state) => state.authUi.activeTab);
   const [tokenExists, setTokenExists] = useState(Cookies.get('token'));
+  const [snackbarState, setSnackbarState] = useState(false);
+  const [snackBarContent, setSnackBarContent] = useState('Added Successfully');
+  const [snackBarType, setSnackBarType] = useState('success');
   const [dataItems, setdataItems] = useState([]);
   const [isPending, setIsPending] = useState(false);
   const [isFetchPending, setIsFetchPending] = useState(false);
@@ -39,6 +45,15 @@ const GardenList = () => {
     dispatch(authUiActions.setGardenActive());
   }, [isLoggedIn]);
   /* ************************************** */
+  /* Snackbar Handlers */
+  /* ************************************** */
+  const handleCloseSnackbar = () => {
+    setSnackbarState(false);
+  };
+  const handleOpenSnackbar = () => {
+    setSnackbarState(true);
+  };
+  /* ************************************** */
   /* Delete Item Function */
   /* ************************************** */
   const deleteItemReq = async (id) => {
@@ -57,6 +72,9 @@ const GardenList = () => {
     setIsPending(false);
     try {
       await fetchData();
+      setSnackBarContent('Deleted Successfully');
+      setSnackBarType('success');
+      setSnackbarState(true);
     } catch (error) {
       console.log(error);
     }
@@ -92,6 +110,9 @@ const GardenList = () => {
     );
     try {
       await fetchData();
+      setSnackBarContent('Edited Successfully');
+      setSnackBarType('success');
+      setSnackbarState(true);
     } catch (error) {
       console.log(error);
     }
@@ -139,6 +160,9 @@ const GardenList = () => {
     );
     try {
       await fetchData();
+      setSnackBarContent('Edited Successfully');
+      setSnackBarType('success');
+      setSnackbarState(true);
     } catch (error) {
       console.log(error);
     }
@@ -182,6 +206,14 @@ const GardenList = () => {
         Authorization: `Bearer ${token}`,
       },
     });
+    try {
+      await fetchData();
+      setSnackBarContent('Added Successfully');
+      setSnackBarType('success');
+      setSnackbarState(true);
+    } catch (error) {
+      console.log(error);
+    }
   };
   /* ************************************** */
   /* fetch Item Data */
@@ -224,9 +256,6 @@ const GardenList = () => {
       </p>
     );
   }
-  const loadData = () => {
-    console.log('loaded');
-  };
   /* ************************************** */
   /* Execute The Load Data Function */
   /* ************************************** */
@@ -317,6 +346,30 @@ const GardenList = () => {
           btnTitle='Save Changes'
         />
       )}
+      <Snackbar
+        open={snackbarState}
+        autoHideDuration={6000}
+        onClose={handleCloseSnackbar}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'right',
+        }}
+      >
+        <Alert
+          onClose={handleCloseSnackbar}
+          severity={snackBarType}
+          sx={{
+            width: '100%',
+            backgroundColor: '#388E3C',
+            color: '#fff',
+            '& .MuiAlert-icon': {
+              color: '#fff',
+            },
+          }}
+        >
+          {snackBarContent}!
+        </Alert>
+      </Snackbar>
     </div>
   );
 };
