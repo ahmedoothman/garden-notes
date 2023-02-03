@@ -4,7 +4,7 @@ const initialAuthUiSlice = {
   navIsShown: true,
   sideNavISMin: false,
   activeTab: 'Garden',
-  url_api: 'https://beautiful-tan-boot.cyclic.app',
+  url_api: 'https://api.gardennotes.live',
 };
 const authUiSlice = createSlice({
   name: 'auth',
