@@ -6,8 +6,10 @@ import RoutingLoadSpin from './components/UI/RoutingLoadSpin';
 import SignInForm from './components/Auth/SignInForm';
 import SignUpForm from './components/Auth/SignUpForm';
 import ForgetPasswordForm from './components/Auth/ForgetPasswordForm';
-import GardenList from './components/DashboardsList/GardenList';
-import Settings from './components/DashboardsList/Settings';
+import GardenList from './components/DashboardsList/Garden/GardenList';
+import { Inventory } from './components/DashboardsList/Inventory';
+import { Notes } from './components/DashboardsList/Notes';
+import Settings from './components/DashboardsList/Settings/Settings';
 const LandingPage = React.lazy(() => import('./pages/LandingPage'));
 const AuthPage = React.lazy(() => import('./pages/AuthPage'));
 const ResetPassword = React.lazy(() => import('./pages/ResetPassword'));
@@ -31,6 +33,11 @@ function App() {
         <Route path='/verify-email/:verifyToken' element={<VerifyEmail />} />
         <Route path='/dashboard/*' element={<Dashboard />}>
           <Route path='garden' element={<GardenList title='Garden' />}></Route>
+          <Route
+            path='inventory'
+            element={<Inventory title='Inventory' />}
+          ></Route>
+          <Route path='notes' element={<Notes title='Inventory' />}></Route>
           <Route
             path='settings'
             element={<Settings title='Settings' />}

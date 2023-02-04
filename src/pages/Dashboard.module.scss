@@ -2,10 +2,14 @@
 
 .top-dash-nav {
   display: flex;
+  padding: 10px;
   padding-left: 20px;
-
+  background-color: #fff;
+  margin-bottom: 40px;
   h1 {
     color: $color-primary-black-dark;
     padding: 0;
+    margin: 0;
+    font-size: 30px;
   }
 }

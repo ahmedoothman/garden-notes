@@ -26,6 +26,7 @@ const SideNav = (props) => {
   const [sideNavClass, setSideNavClass] = useState('side-nav');
   const [windowState, setWindowState] = useState(window.innerWidth);
   const [logoSrc, setlogo] = useState(logo);
+  console.log('SideNav.js: ', tabActive);
   useEffect(() => {
     setWindowState(window.innerWidth);
     /* Toggle Nav Show */
@@ -79,17 +80,24 @@ const SideNav = (props) => {
         </div>
         <div className={classes[`${sideNavClass}__top__menu`]}>
           <ul>
-            <li className={tabActive === 'Garden' ? classes['tab-active'] : ''}>
+            <li
+              className={tabActive === 'Garden' ? classes['tab-active'] : ''}
+              onClick={navToGarden}
+            >
               <img src={garden} onClick={navToGarden} />
               <NavLink to='garden'>Garden</NavLink>
             </li>
             <li
               className={tabActive === 'Inventory' ? classes['tab-active'] : ''}
+              onClick={navToInventory}
             >
               <img src={inventory} onClick={navToInventory} />
               <NavLink to='inventory'>Inventory</NavLink>
             </li>
-            <li className={tabActive === 'Notes' ? classes['tab-active'] : ''}>
+            <li
+              className={tabActive === 'Notes' ? classes['tab-active'] : ''}
+              onClick={navToNotes}
+            >
               <img src={note} onClick={navToNotes} />
               <NavLink to='notes'>Notes</NavLink>
             </li>
@@ -121,7 +129,10 @@ const SideNav = (props) => {
         <hr />
         <div className={classes[`${sideNavClass}__bottom__menu`]}>
           <ul>
-            <li>
+            <li
+              className={tabActive === 'Settings' ? classes['tab-active'] : ''}
+              onClick={navToSettings}
+            >
               <img src={settings} onClick={navToSettings} />
               <NavLink to='settings'>Settings</NavLink>
             </li>

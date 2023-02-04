@@ -1,17 +1,17 @@
 import classes from './Settings.module.scss';
 import { useEffect, useState } from 'react';
 // react redux
-import { authUiActions } from '../../store';
+import { authUiActions } from '../../../store';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { Fragment } from 'react';
-import InputField from '../Auth/InputField';
+import InputField from '../../Auth/InputField';
 import Cookies from 'js-cookie';
 import axios from 'axios';
 import { useRef } from 'react';
-import CompLoadSpin from '../UI/CompLoadSpin ';
-import errorIcon from '../../img/warning.png';
-import sucessIcon from '../../img/checked.png';
+import CompLoadSpin from '../../UI/CompLoadSpin ';
+import errorIcon from '../../../img/warning.png';
+import sucessIcon from '../../../img/checked.png';
 import FormData from 'form-data';
 const Settings = () => {
   let api_url = useSelector((state) => state.authUi.url_api);

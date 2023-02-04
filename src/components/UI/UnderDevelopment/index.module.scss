@@ -1,0 +1,18 @@
+@import '../../../sass/main.scss';
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+  background-color: $color-primary-black-dark;
+  color: #fff;
+  font-size: 1.5rem;
+  font-weight: 600;
+  text-align: center;
+}
+h1 {
+  color: #fff;
+}

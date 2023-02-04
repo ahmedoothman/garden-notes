@@ -3,19 +3,19 @@ import { useEffect, useState, useRef } from 'react';
 import Cookies from 'js-cookie';
 import axios from 'axios';
 import FormData from 'form-data';
+import AddBtn from '../../UI/AddBtn';
 import GardenItem from './GardenItem';
-import AddBtn from '../UI/AddBtn';
-import CompLoadSpinBig from '../UI/CompLoadSpinBig';
-import AddGardenForm from '../UI/AddGardenForm';
-import errorIcon from '../../img/warning.png';
-import SearchBar from '../UI/SearchBar';
-import SearchTabs from '../UI/SearchTabs';
+import CompLoadSpinBig from '../../UI/CompLoadSpinBig';
+import AddGardenForm from '../../UI/AddGardenForm';
+import errorIcon from '../../../img/warning.png';
+import SearchBar from '../../UI/SearchBar';
+import SearchTabs from '../../UI/SearchTabs';
 // material ui
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 // react redux
 import { useSelector } from 'react-redux';
-import { authUiActions } from '../../store/index';
+import { authUiActions } from '../../../store/index';
 import { useDispatch } from 'react-redux';
 const GardenList = () => {
   let api_url = useSelector((state) => state.authUi.url_api);
@@ -206,6 +206,7 @@ const GardenList = () => {
         Authorization: `Bearer ${token}`,
       },
     });
+
     try {
       await fetchData();
       setSnackBarContent('Added Successfully');
