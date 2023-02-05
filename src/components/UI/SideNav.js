@@ -26,7 +26,6 @@ const SideNav = (props) => {
   const [sideNavClass, setSideNavClass] = useState('side-nav');
   const [windowState, setWindowState] = useState(window.innerWidth);
   const [logoSrc, setlogo] = useState(logo);
-  console.log('SideNav.js: ', tabActive);
   useEffect(() => {
     setWindowState(window.innerWidth);
     /* Toggle Nav Show */

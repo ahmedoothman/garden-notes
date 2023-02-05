@@ -9,7 +9,7 @@ const calcDays = (wateredDate) => {
   const oneDay = 1000 * 60 * 60 * 24;
   const dateNow = new Date().getTime();
   const lastWateredDate = new Date(wateredDate);
-  let noDays = Math.floor((dateNow - lastWateredDate.getTime()) / oneDay) - 1;
+  let noDays = Math.floor((dateNow - lastWateredDate.getTime()) / oneDay);
   if (noDays < 0) {
     noDays = 0;
   }

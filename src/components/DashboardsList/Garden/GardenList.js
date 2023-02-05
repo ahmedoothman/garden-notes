@@ -13,6 +13,8 @@ import SearchTabs from '../../UI/SearchTabs';
 // material ui
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
+import Pagination from '@mui/material/Pagination';
+import Stack from '@mui/material/Stack';
 // react redux
 import { useSelector } from 'react-redux';
 import { authUiActions } from '../../../store/index';
@@ -33,16 +35,46 @@ const GardenList = () => {
   const [errorMessage, setErrorMessage] = useState();
   const [isError, setIsError] = useState(false);
   const [itemsContent, setItemsContent] = useState('');
+  const [numberPages, setNumberPages] = useState(10);
   const token = Cookies.get('token');
   const searchRef = useRef();
   const isLoggedIn = !!tokenExists;
   const dispatch = useDispatch();
+
+  // get data size from api
+  const getDataSize = async () => {
+    let dataSize;
+    try {
+      const response = await axios.get(`${api_url}/api/garden/myGarden`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      dataSize = response.data.results;
+      return +dataSize;
+    } catch (error) {
+      /* Show Error Message */
+      setIsError(true);
+      setErrorMessage(error.response.data.message);
+    }
+    return 10;
+  };
+  // fetch data from api
   useEffect(() => {
     if (!isLoggedIn) {
       navigate('/authentication/sign-in', { replace: true });
       return;
     }
     dispatch(authUiActions.setGardenActive());
+
+    getDataSize().then((dataSize) => {
+      setNumberPages(Math.ceil(+dataSize / 5));
+    });
+
+    /* Load Data */
+    (async () => {
+      await fetchData();
+    })();
   }, [isLoggedIn]);
   /* ************************************** */
   /* Snackbar Handlers */
@@ -87,7 +119,6 @@ const GardenList = () => {
     setDataEditObj(data);
   };
   const waterReqHandler = (data, itemID) => {
-    console.log(data);
     editWateredDate(data, itemID);
   };
   /* ************************************** */
@@ -219,7 +250,9 @@ const GardenList = () => {
   /* ************************************** */
   /* fetch Item Data */
   /* ************************************** */
-  const fetchData = async () => {
+
+  const fetchData = async (page = 1) => {
+    //`${api_url}/api/garden/myGarden?page=${page}&limit=5&sort=createdDate`;
     try {
       setIsFetchPending(true);
       const response = await axios.get(`${api_url}/api/garden/myGarden`, {
@@ -258,16 +291,6 @@ const GardenList = () => {
     );
   }
   /* ************************************** */
-  /* Execute The Load Data Function */
-  /* ************************************** */
-  useEffect(() => {
-    /* Load Data */
-    (async () => {
-      await fetchData();
-    })();
-  }, []);
-
-  /* ************************************** */
   /* Open Add Pop Up */
   /* ************************************** */
   const mainOpenAddHandler = () => {
@@ -305,6 +328,11 @@ const GardenList = () => {
     }
   };
 
+  const getPageNumberHandler = async (event, page) => {
+    console.log(page);
+    // it didn't work
+    //await fetchData(page);
+  };
   return (
     <div className={classes['item-list']}>
       <SearchBar
@@ -317,7 +345,9 @@ const GardenList = () => {
       />
       {/* search tabs */}
       <SearchTabs tabs={['Flowers', 'Trees', 'Vegetables']} />
+
       <AddBtn page='Garden' openPopUp={mainOpenAddHandler} />
+
       {isFetchPending && <CompLoadSpinBig />}
       {isError && (
         <div className={classes['error-message']}>
@@ -326,6 +356,7 @@ const GardenList = () => {
         </div>
       )}
       {!isFetchPending && !itemsContent ? normalContent : itemsContent}
+
       {showAddPopUP && (
         <AddGardenForm
           data={{}}
@@ -371,6 +402,22 @@ const GardenList = () => {
           {snackBarContent}!
         </Alert>
       </Snackbar>
+      {!isFetchPending && (
+        <Stack spacing={2}>
+          <Pagination
+            count={+numberPages}
+            variant='outlined'
+            shape='rounded'
+            onChange={getPageNumberHandler}
+            sx={{
+              '& .MuiButtonBase-root': {
+                backgroundColor: '#fff',
+              },
+            }}
+          />
+        </Stack>
+      )}
+      <br />
     </div>
   );
 };
