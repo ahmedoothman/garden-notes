@@ -4,7 +4,7 @@ const initialAuthUiSlice = {
   navIsShown: true,
   sideNavISMin: false,
   activeTab: 'Garden',
-  url_api: 'http://apiv3.gardennotes.live',
+  url_api: 'https://api.v1.gardennotes.live',
 };
 const authUiSlice = createSlice({
   name: 'auth',

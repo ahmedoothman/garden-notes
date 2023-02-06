@@ -7,6 +7,7 @@ import addWhite from '../../img/addWhite.png';
 import closeImg from '../../img/close.png';
 import errorIcon from '../../img/alert.png';
 import ComplLoadSpin from './CompLoadSpin ';
+import Compressor from 'compressorjs';
 const AddGardenForm = (props) => {
   const dateNow = new Date();
   const [isPending, setIsPending] = useState(false);
@@ -24,6 +25,18 @@ const AddGardenForm = (props) => {
   const SoilRef = useRef();
   const fertilizedTypeRef = useRef();
   const notesRef = useRef();
+  const [compressedImage, setCompressedImage] = useState(null);
+  const handleCompressedUpload = (e) => {
+    const image = e.target.files[0];
+    new Compressor(image, {
+      quality: 0.6, // 0.6 can also be used, but its not recommended to go below.
+      success: (compressedResult) => {
+        // compressedResult has the compressed file.
+        // Use the compressed file to upload the images to your server.
+        setImgFile(compressedResult);
+      },
+    });
+  };
   useEffect(() => {
     if (props.data.name) {
       setNameHolder(props.data.name);
@@ -167,7 +180,7 @@ const AddGardenForm = (props) => {
             <input
               type='file'
               className={classes['file-input']}
-              onChange={imgFileHandler}
+              onChange={handleCompressedUpload}
             />
           </div>
           <div className={classes['form-control']}>
