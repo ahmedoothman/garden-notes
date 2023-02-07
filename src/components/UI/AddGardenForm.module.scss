@@ -84,6 +84,10 @@
     .add-btn-form:hover {
       background-color: $color-primary-black-dark;
     }
+    h5 {
+      color: $color-primary-grey-light;
+      display: inline;
+    }
   }
 }
 .close-container {

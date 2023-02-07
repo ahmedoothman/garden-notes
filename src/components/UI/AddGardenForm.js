@@ -21,6 +21,8 @@ const AddGardenForm = (props) => {
   const [soil, setSoil] = useState('');
   const [fertilizetype, setFertilizetype] = useState('');
   const [imgFile, setImgFile] = useState(null);
+  const [imageFileSize, setImageFileSize] = useState(0);
+  const [fileUploading, setFileUploading] = useState(false);
   const [notesHolder, setNotesHolder] = useState('');
   const NameRef = useRef('');
   const SoilRef = useRef();
@@ -31,15 +33,17 @@ const AddGardenForm = (props) => {
   /* Image compressed File Handler */
   /* ************************************** */
   const handleCompressedUpload = async (e) => {
+    setFileUploading(true);
     const imageFile = e.target.files[0];
     const options = {
-      maxSizeMB: 0.6,
+      maxSizeMB: 0.5,
       maxWidthOrHeight: 1920,
     };
     try {
       const compressedFile = await imageCompression(imageFile, options);
       setImgFile(compressedFile);
-      //console.log(compressedFile.size / 1024 / 1024);
+      setFileUploading(false);
+      setImageFileSize((compressedFile.size / 1024 / 1024).toFixed(2));
     } catch (error) {
       console.log(error);
     }
@@ -183,7 +187,14 @@ const AddGardenForm = (props) => {
           </div>
           <div className={classes['form-control']}></div>
           <div className={classes['form-control']}>
-            <label htmlFor='name'>Image</label>
+            <label htmlFor='name'>
+              {fileUploading && <ComplLoadSpin />}
+              Image{' '}
+              {imageFileSize !== 0 && (
+                <h5 classsName={classes['file-size']}>{imageFileSize} MB</h5>
+              )}
+            </label>
+
             <input
               type='file'
               className={classes['file-input']}
