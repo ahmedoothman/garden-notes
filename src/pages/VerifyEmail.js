@@ -10,6 +10,7 @@ import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { authUiActions } from '../store/index';
 
+import { NavLink } from 'react-router-dom';
 const VerifyEmail = () => {
   let api_url = useSelector((state) => state.authUi.url_api);
 
@@ -58,7 +59,10 @@ const VerifyEmail = () => {
               {isSucess && !isPending && (
                 <div className={classes['sucess-message']}>
                   <img src={sucessIcon} />
-                  <p> Your Email is verified, try to sign in</p>
+                  <p>
+                    Your Email is verified, try to
+                    <NavLink to='/authentication/sign-in'> Sign In</NavLink>
+                  </p>
                 </div>
               )}
               {isPending && <CompLoadSpinnerBig />}

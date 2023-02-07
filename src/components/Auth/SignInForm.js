@@ -1,4 +1,5 @@
 import axios from 'axios';
+InputField;
 import Cookies from 'js-cookie';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import useCookies from 'react-cookie/cjs/useCookies';
@@ -81,6 +82,7 @@ const SignInForm = () => {
         const response = await axios.post(`${api_url}/api/users/login`, data);
         setIsvalid(true);
         /*Set Cookies */
+        console.log(response.data.data.user);
         setCookiesHandler(
           response.data.token,
           response.data.data.user.name,

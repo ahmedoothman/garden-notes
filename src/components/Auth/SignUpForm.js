@@ -99,7 +99,7 @@ const SignUpForm = () => {
       } catch (error) {
         console.log(error.response);
         setFormIsValid(false);
-        setErrorMessage(error);
+        setErrorMessage(error.response.data.message);
       }
     }
     setPending(false);
