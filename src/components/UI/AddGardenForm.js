@@ -7,7 +7,8 @@ import addWhite from '../../img/addWhite.png';
 import closeImg from '../../img/close.png';
 import errorIcon from '../../img/alert.png';
 import ComplLoadSpin from './CompLoadSpin ';
-import Compressor from 'compressorjs';
+//import Compressor from 'compressorjs'; // not working well
+import imageCompression from 'browser-image-compression';
 const AddGardenForm = (props) => {
   const dateNow = new Date();
   const [isPending, setIsPending] = useState(false);
@@ -25,17 +26,23 @@ const AddGardenForm = (props) => {
   const SoilRef = useRef();
   const fertilizedTypeRef = useRef();
   const notesRef = useRef();
-  const [compressedImage, setCompressedImage] = useState(null);
-  const handleCompressedUpload = (e) => {
-    const image = e.target.files[0];
-    new Compressor(image, {
-      quality: 0.6, // 0.6 can also be used, but its not recommended to go below.
-      success: (compressedResult) => {
-        // compressedResult has the compressed file.
-        // Use the compressed file to upload the images to your server.
-        setImgFile(compressedResult);
-      },
-    });
+
+  /* ************************************** */
+  /* Image compressed File Handler */
+  /* ************************************** */
+  const handleCompressedUpload = async (e) => {
+    const imageFile = e.target.files[0];
+    const options = {
+      maxSizeMB: 0.6,
+      maxWidthOrHeight: 1920,
+    };
+    try {
+      const compressedFile = await imageCompression(imageFile, options);
+      setImgFile(compressedFile);
+      //console.log(compressedFile.size / 1024 / 1024);
+    } catch (error) {
+      console.log(error);
+    }
   };
   useEffect(() => {
     if (props.data.name) {
@@ -64,9 +71,9 @@ const AddGardenForm = (props) => {
   /* ************************************** */
   /* Image File Handler */
   /* ************************************** */
-  const imgFileHandler = (event) => {
-    setImgFile(event.target.files[0]);
-  };
+  // const imgFileHandler = (event) => {
+  //   setImgFile(event.target.files[0]);
+  // };
   /* ************************************** */
   /* Submit Handler */
   /* ************************************** */
