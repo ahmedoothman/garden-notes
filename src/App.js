@@ -6,7 +6,7 @@ import RoutingLoadSpin from './components/UI/Spinners/RoutingLoadSpin';
 import SignInForm from './pages/AuthPages/SignInForm';
 import SignUpForm from './pages/AuthPages/SignUpForm';
 import ForgetPasswordForm from './pages/AuthPages/ForgetPasswordForm';
-import GardenList from './pages/DashboardPages/Garden/GardenList';
+import GardenList from './pages/DashboardPages/Garden';
 import { Inventory } from './pages/DashboardPages/Inventory';
 import { Notes } from './pages/DashboardPages/Notes';
 import Settings from './pages/DashboardPages/Settings/Settings';
