@@ -50,7 +50,6 @@ const ForgetPasswordForm = () => {
           `${api_url}/api/users/forgotPassword`,
           data
         );
-        console.log(response.data);
         setIsSucess(true);
       } catch (error) {
         setIsSucess(false);

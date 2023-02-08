@@ -44,5 +44,31 @@ const updateUserInfoService = async (api_url) => {
     response.data.data.data.email
   );
 };
+const updateUserData = async (data, api_url, statesFunctions) => {
+  const Token = Cookies.get('token');
+  try {
+    const response = await axios.patch(`${api_url}/api/users/updateMe`, data, {
+      headers: {
+        Accept: '*/*',
+        Authorization: `Bearer ${Token}`,
+      },
+    });
 
-export { updateUserInfoService, setCookiesService };
+    statesFunctions.setIsInfoUpdated(true);
+    statesFunctions.setFirst(false);
+    statesFunctions.setInfoUpdatedSuccessMessage(response.data.message);
+    setCookiesService(
+      null,
+      response.data.data.user.name,
+      response.data.data.user.photo,
+      response.data.data.user.email
+    );
+  } catch (error) {
+    /* Set Error Message */
+    statesFunctions.setIsInfoUpdated(false);
+    statesFunctions.setFirst(false);
+    console.log(error);
+    statesFunctions.setInfoUpdatedFailedMessage(error.response.data.message);
+  }
+};
+export { updateUserInfoService, setCookiesService, updateUserData };

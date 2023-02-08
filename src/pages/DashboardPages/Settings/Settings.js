@@ -7,7 +7,8 @@ import { authUiActions } from '../../../store';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 // services
-import { setCookiesService } from '../../../services/userServices';
+import { updateUserData } from '../../../services/userServices';
+
 // libraries
 import Cookies from 'js-cookie';
 import axios from 'axios';
@@ -60,33 +61,13 @@ const Settings = () => {
       data.append('photo', imgFile);
     }
     setIsEditInfoPending(true);
-    try {
-      const response = await axios.patch(
-        `${api_url}/api/users/updateMe`,
-        data,
-        {
-          headers: {
-            Accept: '*/*',
-            Authorization: `Bearer ${Token}`,
-          },
-        }
-      );
-
-      setIsInfoUpdated(true);
-      setFirst(false);
-      setInfoUpdatedSuccessMessage(response.data.message);
-      setCookiesService(
-        null,
-        response.data.data.user.name,
-        response.data.data.user.photo,
-        response.data.data.user.email
-      );
-    } catch (error) {
-      /* Set Error Message */
-      setIsInfoUpdated(false);
-      setFirst(false);
-      setInfoUpdatedFailedMessage(error.response.data.message);
-    }
+    // send data to server
+    await updateUserData(data, api_url, {
+      setIsInfoUpdated,
+      setFirst,
+      setInfoUpdatedSuccessMessage,
+      setInfoUpdatedFailedMessage,
+    });
     setIsEditInfoPending(false);
   };
   const valiatePasswordInputs = (data) => {
