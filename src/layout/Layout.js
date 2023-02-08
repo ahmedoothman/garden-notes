@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import SideNav from '../components/UI/SideNav';
+import SideNav from './SideNav';
 import classes from './Layout.module.scss';
 import { useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';

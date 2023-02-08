@@ -1,0 +1,106 @@
+@import '../../../sass/main.scss';
+.search-tabs-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: 0px;
+  margin: 0px;
+  margin-top: 15px;
+  ul {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    padding: 0px;
+    margin-left: 10px;
+    li {
+      margin: 0px;
+      margin-right: 7px;
+      padding: 7px 20px;
+      background-color: white;
+      border-radius: 7px;
+      font-size: 14px;
+      font-family: $primary-font;
+      color: $color-primary-black-light;
+      cursor: pointer;
+      border: 2px solid $color-primary-black-light;
+      transition: all 0.4s;
+      font-weight: 200;
+    }
+    li:hover {
+      background-color: $color-primary-grey-light;
+      color: white;
+      border: 2px solid $color-primary-grey-light;
+    }
+    .tab-active {
+      margin: 0px;
+      margin-right: 7px;
+      padding: 7px 20px;
+      border-radius: 7px;
+      font-size: 14px;
+      font-family: $primary-font;
+      cursor: pointer;
+      border: 2px solid $color-primary-black-light;
+      transition: all 0.4s;
+      font-weight: 200;
+      background-color: $color-primary-black-light;
+      color: white;
+    }
+  }
+}
+@media only screen and (max-width: 900px) {
+  .search-tabs-container {
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    padding: 0px;
+    margin: 0px;
+    margin-top: 15px;
+    ul {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      list-style: none;
+      padding: 0px;
+      margin-left: 10px;
+      li {
+        margin: 0px;
+        margin-right: 7px;
+        margin-bottom: 10px;
+        padding: 7px 10px;
+        background-color: white;
+        border-radius: 7px;
+        font-size: 12px;
+        font-family: $primary-font;
+        color: $color-primary-black-light;
+        cursor: pointer;
+        border: 2px solid $color-primary-black-light;
+        transition: all 0.4s;
+        font-weight: 200;
+      }
+      li:hover {
+        background-color: $color-primary-grey-light;
+        color: white;
+        border: 2px solid $color-primary-grey-light;
+      }
+      .tab-active {
+        margin: 0px;
+        margin-right: 7px;
+        margin-bottom: 10px;
+        padding: 7px 10px;
+        background-color: white;
+        border-radius: 7px;
+        font-size: 12px;
+        font-family: $primary-font;
+        color: $color-primary-black-light;
+        cursor: pointer;
+        border: 2px solid $color-primary-black-light;
+        transition: all 0.4s;
+        font-weight: 200;
+        background-color: $color-primary-black-light;
+        color: white;
+      }
+    }
+  }
+}
