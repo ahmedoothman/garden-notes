@@ -14,7 +14,11 @@ import { useDispatch } from 'react-redux';
 import { authUiActions } from '../../store/index';
 import { useSelector } from 'react-redux';
 // services
-import { updateUserInfoService } from '../../services/userServices';
+import {
+  updateUserInfoService,
+  setCookiesService,
+} from '../../services/userServices';
+
 const SignInForm = () => {
   let api_url = useSelector((state) => state.authUi.url_api);
   const navigate = useNavigate();
@@ -30,31 +34,9 @@ const SignInForm = () => {
   const [cookies, setCookies] = useCookies(['user']);
   dispatch(authUiActions.setShown());
   const isLoggedIn = !!checkCookies;
-  const setCookiesHandler = (token, name, photo, email) => {
-    setCookies('token', token, {
-      path: '/',
-      expires: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000),
-    });
-    setCookies('name', name, {
-      path: '/',
-      expires: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000),
-    });
-    setCookies('photo', photo, {
-      path: '/',
-      expires: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000),
-    });
-    setCookies('email', email, {
-      path: '/',
-      expires: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000),
-    });
-    Cookies.set('navIsMin', false, {
-      path: '/',
-      expires: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000),
-    });
-  };
   // update user info
   const updateUserInfo = async () => {
-    await updateUserInfoService(checkCookies, api_url, setCookiesHandler);
+    await updateUserInfoService(api_url);
   };
 
   useEffect(() => {
@@ -87,12 +69,12 @@ const SignInForm = () => {
   const sendLoginReq = useCallback(async (data) => {
     const inputValid = validateInput(data);
     if (inputValid) {
+      setPending(true);
       try {
-        setPending(true);
         const response = await axios.post(`${api_url}/api/users/login`, data);
         setIsvalid(true);
         /*Set Cookies */
-        setCookiesHandler(
+        setCookiesService(
           response.data.token,
           response.data.data.user.name,
           response.data.data.user.photo,
