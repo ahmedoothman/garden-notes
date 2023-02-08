@@ -67,7 +67,6 @@ const updateUserData = async (data, api_url, statesFunctions) => {
     /* Set Error Message */
     statesFunctions.setIsInfoUpdated(false);
     statesFunctions.setFirst(false);
-    console.log(error);
     statesFunctions.setInfoUpdatedFailedMessage(error.response.data.message);
   }
 };
