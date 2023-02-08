@@ -51,7 +51,7 @@ const LandingPage = () => {
 
         <div className={classes['header__bottom-head']}>
           <div className={classes['footer']}>
-            @all copyrights are reserved | Garden Notes
+            @all copyrights are reserved | Garden Notes || V2.0
           </div>
           <div className={classes['service']}>
             <Link className={classes['get-app']} to=''>
