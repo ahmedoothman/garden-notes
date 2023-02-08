@@ -1,18 +1,24 @@
 import classes from './Settings.module.scss';
+import { Fragment } from 'react';
 import { useEffect, useState } from 'react';
+import { useRef } from 'react';
 // react redux
 import { authUiActions } from '../../../store';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
-import { Fragment } from 'react';
-import InputField from '../../../components/UI/Inputs/InputField';
+// services
+import { setCookiesService } from '../../../services/userServices';
+// libraries
 import Cookies from 'js-cookie';
 import axios from 'axios';
-import { useRef } from 'react';
+import FormData from 'form-data';
+// components
+import InputField from '../../../components/UI/Inputs/InputField';
 import CompLoadSpin from '../../../components/UI/Spinners/CompLoadSpin ';
+// images
 import errorIcon from '../../../img/warning.png';
 import sucessIcon from '../../../img/checked.png';
-import FormData from 'form-data';
+
 const Settings = () => {
   let api_url = useSelector((state) => state.authUi.url_api);
   const dispatch = useDispatch();
@@ -53,8 +59,8 @@ const Settings = () => {
     if (imgFile) {
       data.append('photo', imgFile);
     }
+    setIsEditInfoPending(true);
     try {
-      setIsEditInfoPending(true);
       const response = await axios.patch(
         `${api_url}/api/users/updateMe`,
         data,
@@ -69,19 +75,12 @@ const Settings = () => {
       setIsInfoUpdated(true);
       setFirst(false);
       setInfoUpdatedSuccessMessage(response.data.message);
-
-      Cookies.set('name', response.data.data.user.name, {
-        path: '/',
-        expires: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000),
-      });
-      Cookies.set('photo', response.data.data.user.photo, {
-        path: '/',
-        expires: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000),
-      });
-      Cookies.set('email', response.data.data.user.email, {
-        path: '/',
-        expires: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000),
-      });
+      setCookiesService(
+        null,
+        response.data.data.user.name,
+        response.data.data.user.photo,
+        response.data.data.user.email
+      );
     } catch (error) {
       /* Set Error Message */
       setIsInfoUpdated(false);

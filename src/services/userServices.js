@@ -1,12 +1,43 @@
 import axios from 'axios';
-
-const updateUserInfoService = async (token, api_url, setCookiesHandler) => {
+import Cookies from 'js-cookie';
+const setCookiesService = (token, name, photo, email) => {
+  if (token) {
+    Cookies.set('token', token, {
+      path: '/',
+      expires: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000),
+    });
+  }
+  if (name) {
+    Cookies.set('name', name, {
+      path: '/',
+      expires: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000),
+    });
+  }
+  if (photo) {
+    Cookies.set('photo', photo, {
+      path: '/',
+      expires: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000),
+    });
+  }
+  if (email) {
+    Cookies.set('email', email, {
+      path: '/',
+      expires: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000),
+    });
+  }
+  Cookies.set('navIsMin', false, {
+    path: '/',
+    expires: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000),
+  });
+};
+const updateUserInfoService = async (api_url) => {
+  const token = Cookies.get('token');
   const response = await axios.get(`${api_url}/api/users/me`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   });
-  setCookiesHandler(
+  setCookiesService(
     token,
     response.data.data.data.name,
     response.data.data.data.photo,
@@ -14,4 +45,4 @@ const updateUserInfoService = async (token, api_url, setCookiesHandler) => {
   );
 };
 
-export { updateUserInfoService };
+export { updateUserInfoService, setCookiesService };
