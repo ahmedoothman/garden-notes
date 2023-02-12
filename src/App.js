@@ -15,8 +15,8 @@ const AuthPage = React.lazy(() => import('./pages/AuthPages'));
 const ResetPassword = React.lazy(() =>
   import('./pages/AuthPages/ResetPassword')
 );
-const Inventory = React.lazy(() => import('./pages/DashboardPages/Inventory'));
-const Notes = React.lazy(() => import('./pages/DashboardPages/Notes'));
+import Inventory from './pages/DashboardPages/Inventory';
+import Notes from './pages/DashboardPages/Notes';
 const VerifyEmail = React.lazy(() => import('./pages/AuthPages/VerifyEmail'));
 const Dashboard = React.lazy(() => import('./pages/DashboardPages'));
 
