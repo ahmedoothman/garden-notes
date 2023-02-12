@@ -92,9 +92,9 @@ const GardenItem = (props) => {
         </div>
         <div className={classes['garden-item__content__actions']}>
           {props.isPending && <CompLoadSpin />}
-          <DeleteBtn onDelete={deleteHandler} />
-          <WaterBtn onWater={waterHandler} />
-          <EditBtn onEdit={editHandler} />
+          <DeleteBtn onDelete={deleteHandler} background='black' />
+          <WaterBtn onWater={waterHandler} background='black' />
+          <EditBtn onEdit={editHandler} background='black' />
         </div>
       </div>
     </div>

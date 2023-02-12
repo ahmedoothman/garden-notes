@@ -34,18 +34,10 @@ const SignInForm = () => {
   const [cookies, setCookies] = useCookies(['user']);
   dispatch(authUiActions.setShown());
   const isLoggedIn = !!checkCookies;
-  // update user info
-  const updateUserInfo = async () => {
-    await updateUserInfoService(api_url);
-  };
 
   useEffect(() => {
     if (isLoggedIn) {
-      /* Update User Info */
-      (async () => {
-        await updateUserInfo();
-        navigate('/dashboard/garden', { replace: true });
-      })();
+      navigate('/dashboard/garden', { replace: true });
     }
   }, [isLoggedIn]);
 

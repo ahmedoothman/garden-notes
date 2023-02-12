@@ -7,14 +7,16 @@ import SignInForm from './pages/AuthPages/SignInForm';
 import SignUpForm from './pages/AuthPages/SignUpForm';
 import ForgetPasswordForm from './pages/AuthPages/ForgetPasswordForm';
 import GardenList from './pages/DashboardPages/Garden';
-import { Inventory } from './pages/DashboardPages/Inventory';
-import { Notes } from './pages/DashboardPages/Notes';
+// import { Inventory } from './pages/DashboardPages/Inventory';
+// import { Notes } from './pages/DashboardPages/Notes';
 import Settings from './pages/DashboardPages/Settings/Settings';
 const LandingPage = React.lazy(() => import('./pages/LandingPage'));
 const AuthPage = React.lazy(() => import('./pages/AuthPages'));
 const ResetPassword = React.lazy(() =>
   import('./pages/AuthPages/ResetPassword')
 );
+const Inventory = React.lazy(() => import('./pages/DashboardPages/Inventory'));
+const Notes = React.lazy(() => import('./pages/DashboardPages/Notes'));
 const VerifyEmail = React.lazy(() => import('./pages/AuthPages/VerifyEmail'));
 const Dashboard = React.lazy(() => import('./pages/DashboardPages'));
 

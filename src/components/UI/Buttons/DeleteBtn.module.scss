@@ -29,3 +29,32 @@
     width: 12px;
   }
 }
+.delete-btn-white {
+  background-color: #fff;
+  padding: 5px;
+  margin: 0px;
+  width: 30px;
+  border: none;
+  border-radius: 5px;
+  margin-right: 10px;
+  cursor: pointer;
+  transition: all 0.4s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 30px;
+  img {
+    width: 12px;
+  }
+}
+.delete-btn-white:hover {
+  padding: 5px;
+  margin: 0px;
+  border: none;
+  border-radius: 5px;
+  margin-right: 10px;
+  transform: translateY(-1px);
+  img {
+    width: 12px;
+  }
+}
