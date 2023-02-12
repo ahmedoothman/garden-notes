@@ -1,16 +1,22 @@
-import classes from './GardenList.module.scss';
+// react
 import { useEffect, useState, useRef } from 'react';
+// react router
+import { useNavigate } from 'react-router-dom';
+// styles
+import classes from './GardenList.module.scss';
+// libraries
 import Cookies from 'js-cookie';
-import axios from 'axios';
 import FormData from 'form-data';
+import axios from 'axios';
+// images
+import errorIcon from '../../../img/warning.png';
+//components
 import AddBtn from '../../../components/UI/Buttons/AddBtn';
 import GardenItem from './GardenItem';
 import CompLoadSpinBig from '../../../components/UI/Spinners/CompLoadSpinBig';
 import AddGardenForm from './AddGardenForm';
-import errorIcon from '../../../img/warning.png';
 import SearchBar from '../../../components/UI/Search/SearchBar';
 import SearchTabs from '../../../components/UI/Search/SearchTabs';
-import { useNavigate } from 'react-router-dom';
 // material ui
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';

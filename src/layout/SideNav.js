@@ -1,9 +1,19 @@
-import useCookies from 'react-cookie/cjs/useCookies';
+// react
 import { useRef, useState, useEffect } from 'react';
+// react router
 import { NavLink, useNavigate } from 'react-router-dom';
-import classes from './SideNav.module.scss';
+// react redux
 import { useSelector, useDispatch } from 'react-redux';
 import { authUiActions } from '../store/index';
+// Cookies
+import React from 'react';
+import Cookies from 'js-cookie';
+import useCookies from 'react-cookie/cjs/useCookies';
+// Styles
+import classes from './SideNav.module.scss';
+// services
+import { updateUserInfoService } from '../services/userServices';
+// images
 import logo from '../img/logo_white_side.png';
 import logoMin from '../img/logo_white_side-min.png';
 import garden from '../img/garden.png';
@@ -13,21 +23,27 @@ import settings from '../img/setting.png';
 import logout from '../img/logout.png';
 import prev from '../img/prev.png';
 import next from '../img/next.png';
-import React from 'react';
-import Cookies from 'js-cookie';
+
 const SideNav = (props) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [cookies, setCookies, removeCookies] = useCookies(['user']);
-  const [isNavMin, setIsNavMin] = useState(Cookies.get('navIsMin'));
-  const [userImg, setUserImg] = useState(Cookies.get('photo'));
-  const sideNavISMin = useSelector((state) => state.authUi.sideNavISMin);
-  const tabActive = useSelector((state) => state.authUi.activeTab);
+  // styles
   const [sideNavClass, setSideNavClass] = useState('side-nav');
   const [windowState, setWindowState] = useState(window.innerWidth);
   const [logoSrc, setlogo] = useState(logo);
+  // redux
+  const sideNavISMin = useSelector((state) => state.authUi.sideNavISMin);
+  const tabActive = useSelector((state) => state.authUi.activeTab);
+  const url_api = useSelector((state) => state.authUi.url_api);
+  // cookies
+  const [cookies, setCookies, removeCookies] = useCookies(['user']);
+  const [isNavMin, setIsNavMin] = useState(Cookies.get('navIsMin'));
+  const [userImg, setUserImg] = useState(Cookies.get('photo'));
   useEffect(() => {
     setWindowState(window.innerWidth);
+    (async () => {
+      await updateUserInfoService(url_api);
+    })();
     /* Toggle Nav Show */
     if (sideNavISMin) {
       setSideNavClass('side-nav-min');
