@@ -11,7 +11,7 @@
 .formContainer {
   background-color: #fff;
   border-radius: 10px;
-  width: 90%;
+  width: 60%;
   padding: 20px;
   display: flex;
   flex-direction: column;
@@ -86,5 +86,8 @@ h5 {
 @media only screen and (max-width: 600px) {
   .input-container {
     width: 70%;
+  }
+  .formContainer {
+    width: 80%;
   }
 }
