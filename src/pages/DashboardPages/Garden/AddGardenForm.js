@@ -1,13 +1,20 @@
+// react
 import { useState, useRef, useEffect } from 'react';
+// styles
 import classes from './AddGardenForm.module.scss';
+// components
 import Modal from '../../../components/UI/Modal';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
+import ComplLoadSpin from '../../../components/UI/Spinners/CompLoadSpin ';
+// img
 import addWhite from '../../../img/addWhite.png';
 import closeImg from '../../../img/close.png';
 import errorIcon from '../../../img/alert.png';
-import ComplLoadSpin from '../../../components/UI/Spinners/CompLoadSpin ';
+// library
 import imageCompression from 'browser-image-compression';
+import 'react-datepicker/dist/react-datepicker.css';
+import DatePicker from 'react-datepicker';
+// material ui
+import CircularProgress from '@mui/material/CircularProgress';
 const AddGardenForm = (props) => {
   const dateNow = new Date();
   const [isPending, setIsPending] = useState(false);
@@ -186,10 +193,16 @@ const AddGardenForm = (props) => {
           <div className={classes['form-control']}></div>
           <div className={classes['form-control']}>
             <label htmlFor='name'>
-              {fileUploading && <ComplLoadSpin />}
-              Image{' '}
-              {imageFileSize !== 0 && (
-                <h5 classsName={classes['file-size']}>{imageFileSize} MB</h5>
+              Image {imageFileSize !== 0 && <h5>{imageFileSize} MB</h5>}
+              {fileUploading && (
+                <CircularProgress
+                  size='15px'
+                  sx={{
+                    '&	.MuiCircularProgress-svg': {
+                      color: '#2c2c2c',
+                    },
+                  }}
+                />
               )}
             </label>
 

@@ -45,7 +45,6 @@ const createInventoryItem = async (data) => {
   }
 };
 const updateInventoryItem = async (data, id) => {
-  console.log('data', data, 'id', id);
   let formData = new FormData();
   if (data.name) {
     formData.append('name', data.name);
@@ -89,9 +88,22 @@ const deleteInventoryItem = async (id) => {
     return { status: 'error', message: error.response.data.message };
   }
 };
+const getItemInventory = async (id) => {
+  try {
+    const response = await axios.get(`${api_url}/api/inventory/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return { status: 'success', data: response.data.data.data };
+  } catch (error) {
+    return { status: 'error', message: error.response.data.message };
+  }
+};
 export {
   fetchInventory,
   createInventoryItem,
   updateInventoryItem,
   deleteInventoryItem,
+  getItemInventory,
 };

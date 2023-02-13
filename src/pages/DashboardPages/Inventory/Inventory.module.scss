@@ -1,10 +1,10 @@
 @import '../../../sass/main.scss';
 
 .itemsContainer {
-  margin: 20px;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 300px));
   grid-gap: 20px;
+  justify-content: center;
 }
 
 .header-actions {
@@ -13,6 +13,18 @@
   justify-content: center;
   align-items: center;
   padding: 0px;
+}
+.noItemsMessage {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0px;
+  h1 {
+    font-size: 20px;
+    color: $color-primary-black-dark;
+    font-weight: bold;
+  }
 }
 @media only screen and (max-width: 600px) {
   .itemsContainer {

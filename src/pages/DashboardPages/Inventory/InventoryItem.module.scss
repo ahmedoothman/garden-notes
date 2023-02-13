@@ -71,6 +71,12 @@
       font-weight: bold;
     }
   }
+  .itemProgress {
+    transform: translateY(-230px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 }
 
 @media only screen and (max-width: 600px) {

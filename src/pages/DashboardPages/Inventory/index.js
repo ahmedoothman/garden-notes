@@ -27,6 +27,13 @@ import Alert from '@mui/material/Alert';
 /* ********* Reducers Functions ******** */
 /* ************************************* */
 //Fetching Loading Reducer
+const intialFetchingLoadingState = {
+  state: false,
+  success: false,
+  successMessage: '',
+  error: false,
+  errorMessage: '',
+};
 const fetchingLoadingReducer = (state, action) => {
   if (action.type === 'FETCHING') {
     return {
@@ -82,6 +89,15 @@ const fetchingLoadingReducer = (state, action) => {
       errorMessage: action.errorMessage,
     };
   }
+  if (action.type === 'CLEAR') {
+    return {
+      state: false,
+      success: false,
+      successMessage: '',
+      error: false,
+      errorMessage: '',
+    };
+  }
   return {
     state: false,
     success: false,
@@ -91,6 +107,11 @@ const fetchingLoadingReducer = (state, action) => {
   };
 };
 //Update Loading Reducer
+const intialUpdateLoadingState = {
+  state: false,
+  error: false,
+  errorMessage: '',
+};
 const updateLoadingReducer = (state, action) => {
   if (action.type === 'FETCHING') {
     return { state: true, error: false, errorMessage: '' };
@@ -98,8 +119,15 @@ const updateLoadingReducer = (state, action) => {
   if (action.type === 'DONE') {
     return { state: false, error: false, errorMessage: '' };
   }
+  if (action.type === 'CLEAR') {
+    return { state: false, error: false, errorMessage: '' };
+  }
   if (action.type === 'ERROR') {
-    return { state: false, error: true, errorMessage: action.errorMessage };
+    return {
+      state: false,
+      error: true,
+      errorMessage: action.errorMessage,
+    };
   }
   return { state: false, error: false, errorMessage: '' };
 };
@@ -110,34 +138,32 @@ const updateLoadingReducer = (state, action) => {
 const Inventory = () => {
   const dispatch = useDispatch();
   // inventory data
-  const [inventoryData, setinventoryData] = useState(null);
+  const [inventoryData, setinventoryData] = useState([]);
   const [fetchingLoadingState, dispatchFetchingLoading] = useReducer(
     fetchingLoadingReducer,
-    {
-      state: false,
-      error: false,
-      errorMessage: '',
-    }
+    intialFetchingLoadingState
   );
   const [updateLoadingState, dispatchUpdateLoadingState] = useReducer(
     updateLoadingReducer,
-    {
-      state: false,
-      error: false,
-      errorMessage: '',
-    }
+    intialUpdateLoadingState
   );
   // form state
   const [openForm, setOpenForm] = useState(false);
+  const [formType, setFormType] = useState('create');
+  const [itemUpdateId, setItemUpdateId] = useState(null);
   const handleCloseFormMain = () => {
     setOpenForm(false);
   };
   const handleOpenFormMain = () => {
     setOpenForm(true);
+    setFormType('create');
   };
   // snackbar state
   const handleCloseSnackbar = () => {
-    dispatchFetchingLoading({ type: 'DONE' });
+    dispatchFetchingLoading({ type: 'CLEAR' });
+  };
+  const getIdHandler = (id) => {
+    setItemUpdateId(id);
   };
   /* ************************************* */
   /* ********** Tasks at Loading ********* */
@@ -257,24 +283,37 @@ const Inventory = () => {
       {/* ********** INVENTORY ITEMS ********** */}
       <div className={styles['itemsContainer']}>
         {!fetchingLoadingState.state &&
-          inventoryData &&
+          inventoryData.length > 0 &&
           inventoryData.map((item) => (
             <InventoryItem
               data={item}
               key={item._id}
               deleteInventoryItem={deleteInventoryItemHandler}
               outOfStockHandler={outOfStockHandler}
+              openForm={setOpenForm}
+              setFormType={setFormType}
+              passID={getIdHandler}
             />
           ))}
       </div>
 
+      {!fetchingLoadingState.state && inventoryData.length === 0 && (
+        <div className={styles['noItemsMessage']}>
+          <h1>No Items in your inventory 😔</h1>
+        </div>
+      )}
       {/* ********** INVENTORY POP UP FORM ********** */}
       <InventoryForm
         open={openForm}
         handleCloseForm={handleCloseFormMain}
-        btnTitle='Add to Inventory'
+        btnTitle={formType === 'create' ? 'Add to Inventory' : 'Update Item'}
+        updateInventoryItem={updateInventoryItemHandler}
         updateLoadingState={updateLoadingState}
+        dispatchUpdateLoadingState={dispatchUpdateLoadingState}
         createInventoryItem={createInventoryItemHandler}
+        itemUpdateId={itemUpdateId}
+        setItemUpdateId={setItemUpdateId}
+        formType={formType}
       />
       {/* ********** ERROR SNACKBAR ********** */}
       <Snackbar
