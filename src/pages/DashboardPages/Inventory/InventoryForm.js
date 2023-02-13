@@ -57,6 +57,7 @@ const InventoryForm = (props) => {
     setItemType('soil');
     setAvailable('true');
     setImgFile(null);
+    setImageFileSize(0);
     props.setItemUpdateId(null);
     props.handleCloseForm();
   };
