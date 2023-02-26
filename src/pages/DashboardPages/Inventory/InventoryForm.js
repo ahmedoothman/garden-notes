@@ -36,7 +36,6 @@ const InventoryForm = (props) => {
   /* ************************************* */
   const { itemUpdateId } = props;
   useEffect(() => {
-    console.log('itemUpdatedId', itemUpdateId);
     if (itemUpdateId) {
       setIsFormPending(true);
       (async () => {
