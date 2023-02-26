@@ -43,6 +43,8 @@ const SideNav = (props) => {
     setWindowState(window.innerWidth);
     (async () => {
       await updateUserInfoService(url_api);
+      // take the new image from cookies
+      setUserImg(Cookies.get('photo'));
     })();
     /* Toggle Nav Show */
     if (sideNavISMin) {
