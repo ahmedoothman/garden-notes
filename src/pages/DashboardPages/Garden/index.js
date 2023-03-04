@@ -109,6 +109,7 @@ const GardenList = () => {
   /* ************************************** */
   const handleCloseSnackbar = () => {
     setSnackbarState(false);
+    setIsError(false);
   };
   const handleOpenSnackbar = () => {
     setSnackbarState(true);
@@ -124,20 +125,15 @@ const GardenList = () => {
           Authorization: `Bearer ${token}`,
         },
       });
+      setSnackBarContent('Deleted Successfully');
+      setSnackBarType('success');
+      setSnackbarState(true);
     } catch (error) {
       /* Show error message */
       setIsError(true);
       setErrorMessage(error.response.data.message);
     }
     setIsPending(false);
-    try {
-      await fetchData();
-      setSnackBarContent('Deleted Successfully');
-      setSnackBarType('success');
-      setSnackbarState(true);
-    } catch (error) {
-      console.log(error);
-    }
   };
   /* ************************************** */
   /* Edit Item Function */
@@ -157,23 +153,24 @@ const GardenList = () => {
     if (dataItem.wateredDate) {
       data.append('lastWateredDate', dataItem.wateredDate);
     }
-    const response = await axios.patch(
-      `${api_url}/api/garden/${itemId}`,
-      data,
-      {
-        headers: {
-          Accept: '*/*',
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
     try {
-      await fetchData();
+      const response = await axios.patch(
+        `${api_url}/api/garden/${itemId}`,
+        data,
+        {
+          headers: {
+            Accept: '*/*',
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       setSnackBarContent('Edited Successfully');
       setSnackBarType('success');
       setSnackbarState(true);
     } catch (error) {
-      console.log(error);
+      /* Show Error Message */
+      setIsError(true);
+      setErrorMessage(error.response.data.message);
     }
   };
   /* ************************************** */
@@ -207,23 +204,24 @@ const GardenList = () => {
     }
     data.append('Type', 'flowers');
 
-    const response = await axios.patch(
-      `${api_url}/api/garden/${dataEditObj._id}`,
-      data,
-      {
-        headers: {
-          Accept: '*/*',
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
     try {
-      await fetchData();
+      const response = await axios.patch(
+        `${api_url}/api/garden/${dataEditObj._id}`,
+        data,
+        {
+          headers: {
+            Accept: '*/*',
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       setSnackBarContent('Edited Successfully');
       setSnackBarType('success');
       setSnackbarState(true);
     } catch (error) {
-      console.log(error);
+      /* Show Error Message */
+      setIsError(true);
+      setErrorMessage(error.response.data.message);
     }
   };
 
@@ -259,20 +257,20 @@ const GardenList = () => {
     }
     data.append('Type', 'flowers');
 
-    const response = await axios.post(`${api_url}/api/garden/`, data, {
-      headers: {
-        Accept: '*/*',
-        Authorization: `Bearer ${token}`,
-      },
-    });
-
     try {
-      await fetchData();
+      const response = await axios.post(`${api_url}/api/garden/`, data, {
+        headers: {
+          Accept: '*/*',
+          Authorization: `Bearer ${token}`,
+        },
+      });
       setSnackBarContent('Added Successfully');
       setSnackBarType('success');
       setSnackbarState(true);
     } catch (error) {
-      console.log(error);
+      /* Show Error Message */
+      setIsError(true);
+      setErrorMessage(error.response.data.message);
     }
   };
 
@@ -357,12 +355,6 @@ const GardenList = () => {
       <AddBtn page='Garden' openPopUp={mainOpenAddHandler} />
 
       {isFetchPending && <CompLoadSpinBig />}
-      {isError && (
-        <div className={classes['error-message']}>
-          <img src={errorIcon} />
-          <p>{errorMessage}</p>
-        </div>
-      )}
       {!isFetchPending && !itemsContent ? normalContent : itemsContent}
 
       {showAddPopUP && (
@@ -386,6 +378,32 @@ const GardenList = () => {
           btnTitle='Save Changes'
         />
       )}
+      {/* ********** ERROR SNACKBAR ********** */}
+      <Snackbar
+        open={isError}
+        autoHideDuration={20000}
+        onClose={handleCloseSnackbar}
+        anchorOrigin={{
+          vertical: 'top',
+          horizontal: 'center',
+        }}
+      >
+        <Alert
+          onClose={handleCloseSnackbar}
+          severity='error'
+          sx={{
+            width: '100%',
+            backgroundColor: '#D32F2F',
+            color: '#fff',
+            '& .MuiAlert-icon': {
+              color: '#fff',
+            },
+          }}
+        >
+          {errorMessage}!
+        </Alert>
+      </Snackbar>
+      {/* ********** SUCCESS SNACKBAR ********** */}
       <Snackbar
         open={snackbarState}
         autoHideDuration={6000}

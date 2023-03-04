@@ -200,7 +200,6 @@ const Inventory = () => {
       dispatchFetchingLoading({ type: 'DONE-CREATED' });
       dispatchUpdateLoadingState({ type: 'DONE' });
       setOpenForm(false);
-      await fetchInventoryData();
     } else {
       dispatchUpdateLoadingState({
         type: 'ERROR',
@@ -218,7 +217,6 @@ const Inventory = () => {
       dispatchFetchingLoading({ type: 'DONE-UPDATED' });
       dispatchUpdateLoadingState({ type: 'DONE' });
       setOpenForm(false);
-      await fetchInventoryData();
     } else {
       dispatchUpdateLoadingState({
         type: 'ERROR',
@@ -236,7 +234,6 @@ const Inventory = () => {
     if (response.status === 'success') {
       dispatchFetchingLoading({ type: 'DONE-UPDATED' });
       dispatchUpdateLoadingState({ type: 'DONE' });
-      await fetchInventoryData();
     } else {
       dispatchUpdateLoadingState({
         type: 'ERROR',
@@ -252,7 +249,6 @@ const Inventory = () => {
     const response = await deleteInventoryItem(id);
     if (response.status === 'success') {
       dispatchFetchingLoading({ type: 'DONE-DELETED' });
-      await fetchInventoryData();
     } else {
       dispatchFetchingLoading({
         type: 'ERROR',
@@ -318,6 +314,7 @@ const Inventory = () => {
       {/* ********** ERROR SNACKBAR ********** */}
       <Snackbar
         open={fetchingLoadingState.error}
+        onClose={handleCloseSnackbar}
         autoHideDuration={20000}
         anchorOrigin={{
           vertical: 'top',
@@ -326,6 +323,7 @@ const Inventory = () => {
       >
         <Alert
           severity='error'
+          onClose={handleCloseSnackbar}
           sx={{
             width: '100%',
             backgroundColor: '#D32F2F',
