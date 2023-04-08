@@ -38,14 +38,11 @@ const SideNav = (props) => {
   const userInfo = useSelector((state) => state.userInfo);
   // cookies
   const [isNavMin, setIsNavMin] = useState(Cookies.get('navIsMin'));
-  const [userImg, setUserImg] = useState(Cookies.get('photo'));
   useEffect(() => {
     setWindowState(window.innerWidth);
     (async () => {
       await updateUserInfoService();
       dispatch(userInfoActions.updateUserDataFromCookies());
-      // take the new image from cookies
-      // setUserImg(Cookies.get('photo'));
     })();
     /* Toggle Nav Show */
     if (sideNavISMin) {
@@ -140,7 +137,6 @@ const SideNav = (props) => {
           )}
         </div>
         <div className={classes[`${sideNavClass}__bottom__user`]}>
-          {/* https://gardennotes.herokuapp.com/api/img/users/default.jpeg */}
           <img src={`${userInfo.photo}`} alt='user' />
           <h2>{userInfo.name}</h2>
         </div>

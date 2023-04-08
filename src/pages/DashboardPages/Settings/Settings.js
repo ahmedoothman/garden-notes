@@ -80,6 +80,14 @@ const userInfoReducer = (state, action) => {
       photo: action.data.photo,
     };
   }
+  if (action.type === 'UPDATE-COOKIES') {
+    return {
+      name: Cookies.get('name'),
+      email: Cookies.get('email'),
+      photo: Cookies.get('photo'),
+    };
+  }
+
   return userInfoInitialState;
 };
 // password reducer
@@ -171,7 +179,10 @@ const Settings = () => {
   /* *********** Set Active Page *********** */
   /* ****************************************** */
   useEffect(() => {
+    // set active page
     dispatch(authUiActions.setSettingsActive());
+    // update user info from cookies
+    dispatchUserInfoReducer({ type: 'UPDATE-COOKIES' });
   }, []);
 
   /* ******************************************** */

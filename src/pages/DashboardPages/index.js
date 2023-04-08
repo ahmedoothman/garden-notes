@@ -3,7 +3,7 @@ import { Outlet, useNavigate, NavLink } from 'react-router-dom';
 import classes from './Dashboard.module.scss';
 // components
 import Layout from '../../layout/Layout';
-// libraries
+// library
 import Cookies from 'js-cookie';
 // react redux
 import { useSelector } from 'react-redux';
@@ -16,19 +16,14 @@ import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 /*  */
 const Dashboard = () => {
   const navigate = useNavigate();
-  const [tokenExists, setTokenExists] = useState(Cookies.get('token'));
-  const [nameCookie, setNameCookie] = useState(Cookies.get('name'));
-  const [photoCookie, setPhotoCookie] = useState(Cookies.get('photo'));
-  const [emailCookie, setEmailCookie] = useState(Cookies.get('email'));
+  // cookies
+  const token = Cookies.get('token');
+  // redux
   let titleContent = useSelector((state) => state.authUi.activeTab);
-  const userData = {
-    name: nameCookie,
-    photo: photoCookie,
-    email: emailCookie,
-  };
   const isMin = useSelector((state) => state.authUi.sideNavISMin);
   const activeTab = useSelector((state) => state.authUi.activeTab);
-  const isLoggedIn = !!tokenExists;
+  const isLoggedIn = !!token;
+  // useEffect
   useEffect(() => {
     if (isLoggedIn) {
       navigate(`/dashboard/${activeTab.toLowerCase()}`, { replace: true });
@@ -36,6 +31,7 @@ const Dashboard = () => {
       navigate('/authentication/sign-in', { replace: true });
     }
   }, [isLoggedIn]);
+
   // Breadcrumb
   const breadcrumbs = [
     <Link underline='hover' key='1' color='inherit' href='/'>
@@ -50,7 +46,7 @@ const Dashboard = () => {
   ];
   return (
     <Fragment>
-      <Layout user={userData} isMin={isMin}>
+      <Layout isMin={isMin}>
         <div className={classes['top-dash-nav']}>
           <Stack spacing={2}>
             <Breadcrumbs

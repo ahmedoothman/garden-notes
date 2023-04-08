@@ -41,6 +41,7 @@ const initialUserInfoSlice = {
   name: Cookies.get('name'),
   photo: Cookies.get('photo'),
   email: Cookies.get('email'),
+  token: Cookies.get('token'),
 };
 const userInfoSlice = createSlice({
   name: 'userInfo',

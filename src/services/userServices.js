@@ -43,6 +43,7 @@ const setCookiesService = (token, name, photo, email) => {
 /* *********** set Cookies Service *********** */
 /* ****************************************** */
 const updateUserInfoService = async () => {
+  token = Cookies.get('token');
   const response = await axios.get(`${api_url}/api/users/me`, {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -59,6 +60,7 @@ const updateUserInfoService = async () => {
 /* *********** update User Data*********** */
 /* ****************************************** */
 const updateUserData = async (data) => {
+  token = Cookies.get('token');
   // convert data to form data
   let formData = new FormData();
   if (data.name) {
@@ -97,6 +99,7 @@ const updateUserData = async (data) => {
   }
 };
 const updatePassword = async (data) => {
+  token = Cookies.get('token');
   try {
     const response = await axios.patch(
       `${api_url}/api/users/updateMyPassword`,
