@@ -1,7 +1,6 @@
 // react
 import { Fragment, useEffect, useState, useReducer } from 'react';
 // components
-import { UnderDevelopment } from '../../../components/UI/UnderDevelopment';
 import CompLoadSpinBig from '../../../components/UI/Spinners/CompLoadSpinBig';
 import SearchTabs from '../../../components/UI/Search/SearchTabs';
 import SearchBar from '../../../components/UI/Search/SearchBar';
@@ -9,7 +8,7 @@ import AddBtn from '../../../components/UI/Buttons/AddBtn';
 import { InventoryItem } from './InventoryItem';
 import { InventoryForm } from './InventoryForm';
 // styles
-import styles from './Inventory.module.scss';
+import styles from './index.module.scss';
 // react redux
 import { authUiActions } from '../../../store/index';
 import { useDispatch } from 'react-redux';

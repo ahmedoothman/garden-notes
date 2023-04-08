@@ -4,11 +4,10 @@ import { useRef, useState, useEffect } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 // react redux
 import { useSelector, useDispatch } from 'react-redux';
-import { authUiActions } from '../store/index';
+import { authUiActions, userInfoActions } from '../store/index';
 // Cookies
 import React from 'react';
 import Cookies from 'js-cookie';
-import useCookies from 'react-cookie/cjs/useCookies';
 // Styles
 import classes from './SideNav.module.scss';
 // services
@@ -36,7 +35,6 @@ const SideNav = (props) => {
   const tabActive = useSelector((state) => state.authUi.activeTab);
   const url_api = useSelector((state) => state.authUi.url_api);
   // cookies
-  const [cookies, setCookies, removeCookies] = useCookies(['user']);
   const [isNavMin, setIsNavMin] = useState(Cookies.get('navIsMin'));
   const [userImg, setUserImg] = useState(Cookies.get('photo'));
   useEffect(() => {

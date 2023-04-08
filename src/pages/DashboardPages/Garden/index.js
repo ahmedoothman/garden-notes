@@ -3,13 +3,11 @@ import { useEffect, useState, useRef } from 'react';
 // react router
 import { useNavigate } from 'react-router-dom';
 // styles
-import classes from './GardenList.module.scss';
+import classes from './index.module.scss';
 // libraries
 import Cookies from 'js-cookie';
 import FormData from 'form-data';
 import axios from 'axios';
-// images
-import errorIcon from '../../../img/warning.png';
 //components
 import AddBtn from '../../../components/UI/Buttons/AddBtn';
 import GardenItem from './GardenItem';

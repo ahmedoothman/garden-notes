@@ -2,8 +2,10 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 import FormData from 'form-data';
 import store from '../store';
+
 const api_url = store.getState().authUi.url_api;
 let token = Cookies.get('token');
+
 const fetchInventory = async () => {
   // update token
   token = Cookies.get('token');

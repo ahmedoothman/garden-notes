@@ -75,6 +75,7 @@ const SignInForm = () => {
         /* Forward to DashBoard */
         navigate('/dashboard/garden', { replace: true });
       } catch (error) {
+        console.log(error.response.data.message);
         setErrorMessage(error.response.data.message);
         setIsvalid(false);
         if (error.response.data.message !== 'Your email is not verified') {
