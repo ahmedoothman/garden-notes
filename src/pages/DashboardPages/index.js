@@ -26,6 +26,7 @@ const Dashboard = () => {
     photo: photoCookie,
     email: emailCookie,
   };
+
   const isMin = useSelector((state) => state.authUi.sideNavISMin);
   const activeTab = useSelector((state) => state.authUi.activeTab);
   const isLoggedIn = !!tokenExists;
