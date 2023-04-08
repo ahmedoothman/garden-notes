@@ -44,6 +44,7 @@ const InventoryForm = (props) => {
           setName(response.data.name);
           setItemType(response.data.Type);
           setAvailable(response.data.available === true ? 'true' : 'false');
+          setImgFile(response.data.photo);
           setIsFormPending(false);
         }
       })();

@@ -212,6 +212,21 @@ const Inventory = () => {
   const updateInventoryItemHandler = async (data, id) => {
     dispatchUpdateLoadingState({ type: 'FETCHING' });
     const response = await updateInventoryItem(data, id);
+    // update data
+    setinventoryData((prev) =>
+      prev.map((item) => {
+        if (item._id === id) {
+          return {
+            ...item,
+            name: data.name,
+            photo: data.photo,
+            available: data.available === 'true' ? true : false,
+            Type: data.Type,
+          };
+        }
+        return item;
+      })
+    );
     if (response.status === 'success') {
       dispatchFetchingLoading({ type: 'DONE-UPDATED' });
       dispatchUpdateLoadingState({ type: 'DONE' });
@@ -230,6 +245,17 @@ const Inventory = () => {
     const data = { available: 'false' };
     dispatchUpdateLoadingState({ type: 'FETCHING' });
     const response = await updateInventoryItem(data, id);
+    setinventoryData((prev) =>
+      prev.map((item) => {
+        if (item._id === id) {
+          return {
+            ...item,
+            available: data.available === 'true' ? true : false,
+          };
+        }
+        return item;
+      })
+    );
     if (response.status === 'success') {
       dispatchFetchingLoading({ type: 'DONE-UPDATED' });
       dispatchUpdateLoadingState({ type: 'DONE' });

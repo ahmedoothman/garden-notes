@@ -13,7 +13,6 @@ import Stack from '@mui/material/Stack';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Typography from '@mui/material/Typography';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
-/*  */
 const Dashboard = () => {
   const navigate = useNavigate();
   // cookies
