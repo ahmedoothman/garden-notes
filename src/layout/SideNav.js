@@ -34,15 +34,18 @@ const SideNav = (props) => {
   const sideNavISMin = useSelector((state) => state.authUi.sideNavISMin);
   const tabActive = useSelector((state) => state.authUi.activeTab);
   const url_api = useSelector((state) => state.authUi.url_api);
+  // ------------------------------------------------------
+  const userInfo = useSelector((state) => state.userInfo);
   // cookies
   const [isNavMin, setIsNavMin] = useState(Cookies.get('navIsMin'));
   const [userImg, setUserImg] = useState(Cookies.get('photo'));
   useEffect(() => {
     setWindowState(window.innerWidth);
     (async () => {
-      await updateUserInfoService(url_api);
+      await updateUserInfoService();
+      dispatch(userInfoActions.updateUserDataFromCookies());
       // take the new image from cookies
-      setUserImg(Cookies.get('photo'));
+      // setUserImg(Cookies.get('photo'));
     })();
     /* Toggle Nav Show */
     if (sideNavISMin) {
@@ -138,8 +141,8 @@ const SideNav = (props) => {
         </div>
         <div className={classes[`${sideNavClass}__bottom__user`]}>
           {/* https://gardennotes.herokuapp.com/api/img/users/default.jpeg */}
-          <img src={`${userImg}`} alt='user' />
-          <h2>{props.user.name}</h2>
+          <img src={`${userInfo.photo}`} alt='user' />
+          <h2>{userInfo.name}</h2>
         </div>
         <hr />
         <div className={classes[`${sideNavClass}__bottom__menu`]}>

@@ -2,7 +2,7 @@ import classes from './Settings.module.scss';
 import { Fragment } from 'react';
 import { useEffect, useState, useReducer, useRef } from 'react';
 // react redux
-import { authUiActions } from '../../../store';
+import { authUiActions, userInfoActions } from '../../../store';
 import { useDispatch, useSelector } from 'react-redux';
 // services
 import { updateUserData, updatePassword } from '../../../services/userServices';
@@ -184,6 +184,7 @@ const Settings = () => {
     if (response.status === 'success') {
       dispatchAccountInfo({ type: 'SUCCESS' });
       dispatchUserInfoReducer({ type: 'UPDATE', data: response.dataArray });
+      dispatch(userInfoActions.updateUserDataFromCookies());
     } else {
       dispatchAccountInfo({ type: 'ERROR', errorMessage: response.message });
     }

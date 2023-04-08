@@ -1,9 +1,12 @@
-import Cookies from 'js-cookie';
 import { Fragment, useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { Outlet, useNavigate, NavLink } from 'react-router-dom';
-import Layout from '../../layout/Layout';
 import classes from './Dashboard.module.scss';
+// components
+import Layout from '../../layout/Layout';
+// libraries
+import Cookies from 'js-cookie';
+// react redux
+import { useSelector } from 'react-redux';
 // material ui
 import Link from '@mui/material/Link';
 import Stack from '@mui/material/Stack';
@@ -24,10 +27,11 @@ const Dashboard = () => {
     email: emailCookie,
   };
   const isMin = useSelector((state) => state.authUi.sideNavISMin);
+  const activeTab = useSelector((state) => state.authUi.activeTab);
   const isLoggedIn = !!tokenExists;
   useEffect(() => {
     if (isLoggedIn) {
-      navigate('/dashboard/garden', { replace: true });
+      navigate(`/dashboard/${activeTab.toLowerCase()}`, { replace: true });
     } else {
       navigate('/authentication/sign-in', { replace: true });
     }
