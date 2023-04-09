@@ -10,7 +10,7 @@ const fetchInventory = async () => {
   // update token
   token = Cookies.get('token');
   try {
-    const response = await axios.get(`${api_url}/api/inventory`, {
+    const response = await axios.get(`${api_url}/api/inventory/myInventory`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

@@ -5,16 +5,15 @@ import { useEffect, useState, useReducer, useRef } from 'react';
 import { authUiActions, userInfoActions } from '../../../store';
 import { useDispatch, useSelector } from 'react-redux';
 // services
-import { updateUserData, updatePassword } from '../../../services/userServices';
+import {
+  updateUserDataService,
+  updatePasswordService,
+} from '../../../services/userServices';
 // libraries
 import Cookies from 'js-cookie';
-import axios from 'axios';
 // components
 import InputField from '../../../components/UI/Inputs/InputField';
 import CompLoadSpin from '../../../components/UI/Spinners/CompLoadSpin ';
-// images
-import errorIcon from '../../../img/warning.png';
-import sucessIcon from '../../../img/checked.png';
 // material ui
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
@@ -191,11 +190,11 @@ const Settings = () => {
   const updateAccountInfo = async (data) => {
     dispatchAccountInfo({ type: 'UPDATING' });
     // send data to server
-    const response = await updateUserData(data);
+    const response = await updateUserDataService(data);
     if (response.status === 'success') {
       dispatchAccountInfo({ type: 'SUCCESS' });
       dispatchUserInfoReducer({ type: 'UPDATE', data: response.dataArray });
-      dispatch(userInfoActions.updateUserDataFromCookies());
+      dispatch(userInfoActions.updateUserDataServiceFromCookies());
     } else {
       dispatchAccountInfo({ type: 'ERROR', errorMessage: response.message });
     }
@@ -245,7 +244,7 @@ const Settings = () => {
     /* Axios */
     if (status) {
       dispatchPassword({ type: 'UPDATING' });
-      const response = await updatePassword(data);
+      const response = await updatePasswordService(data);
       if (response.status === 'success') {
         dispatchPassword({ type: 'SUCCESS' });
       } else {

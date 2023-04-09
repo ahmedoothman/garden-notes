@@ -1,8 +1,13 @@
 import { Fragment, useState, useEffect } from 'react';
-import classes from './AuthPage.module.scss';
-import wideLogo from '../../img/wide-logo-web.png';
+import { Outlet, NavLink, useNavigate } from 'react-router-dom';
+// react redux
 import { useSelector } from 'react-redux';
-import { Link, Outlet, NavLink, useNavigate } from 'react-router-dom';
+// styles
+import classes from './index.module.scss';
+// images
+import wideLogo from '../../img/wide-logo-web.png';
+
+// react component
 const AuthPage = () => {
   const navigate = useNavigate();
   const activeClass = classes['auth-content__nav__sign-nav-btn-active'];
@@ -10,6 +15,7 @@ const AuthPage = () => {
   const [sign, setSign] = useState(true);
   const navIsShown = useSelector((state) => state.authUi.navIsShown);
 
+  // redirect to sign in
   useEffect(() => {
     updateActiveClass();
     if (location.pathname === '/authentication') {
@@ -17,6 +23,7 @@ const AuthPage = () => {
     }
   }, []);
 
+  // update active class
   const updateActiveClass = () => {
     if (location.pathname === '/authentication/sign-in') {
       setSign(true);

@@ -1,38 +1,86 @@
-import React, { useState, useRef, useEffect } from 'react';
+// react
+import React, { useState, useRef, useEffect, useReducer } from 'react';
 import { useNavigate } from 'react-router-dom';
-import validator from 'validator';
-import axios from 'axios';
+// styles
 import classes from './SignUpForm.module.scss';
-import InputField from '../../components/UI/Inputs/InputField';
-import Button from '../../components/UI/Buttons/Button';
+// libraries
+import validator from 'validator';
 import Cookies from 'js-cookie';
+// images
 import errorIcon from '../../img/warning.png';
 import sucessIcon from '../../img/checked.png';
+// components
 import CompLoadSpin from '../../components/UI/Spinners/CompLoadSpin ';
-
+import Button from '../../components/UI/Buttons/Button';
+import InputField from '../../components/UI/Inputs/InputField';
 // React redux
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { authUiActions } from '../../store/index';
-import { useSelector } from 'react-redux';
+// services
+import { signUpService } from '../../services/userServices';
+// sign up states reducer
+const signUpStatesInitialState = {
+  valid: false,
+  invalid: false,
+  errorMessage: '',
+  pending: false,
+};
+const signUpStatesReducer = (state, action) => {
+  if (action.type === 'VALID') {
+    return {
+      valid: true,
+      invalid: false,
+      errorMessage: '',
+      pending: false,
+    };
+  }
+  if (action.type === 'INVALID') {
+    return {
+      valid: false,
+      invalid: true,
+      errorMessage: action.errorMessage,
+      pending: false,
+    };
+  }
+  if (action.type === 'PENDING') {
+    return {
+      valid: false,
+      invalid: false,
+      errorMessage: '',
+      pending: true,
+    };
+  }
+  if (action.type === 'CLEAR') {
+    return {
+      valid: state.valid,
+      invalid: state.invalid,
+      errorMessage: state.errorMessage,
+      pending: false,
+    };
+  }
+  return signUpStatesInitialState;
+};
+// react components
 const SignUpForm = () => {
-  let api_url = useSelector((state) => state.authUi.url_api);
-
+  //  react redux
+  const dispatch = useDispatch();
+  //  react router
   const navigate = useNavigate();
-
+  // Refs
   const nameInputRef = useRef();
   const emailInputRef = useRef();
   const passwordInputRef = useRef();
   const passwordConfirmInputRef = useRef();
-
-  const dispatch = useDispatch();
+  // cookies
   const [checkCookies, setcheckCookies] = useState(Cookies.get('token'));
-  const [formIsValid, setFormIsValid] = useState(true);
-  const [isSucess, setIsSucess] = useState(false);
-  const [pending, setPending] = useState(false);
-  const [errorMessage, setErrorMessage] = useState();
-
+  // show navbar
   dispatch(authUiActions.setShown());
-
+  // sign up states
+  const [signUpStates, dispatchSignUpStates] = useReducer(
+    signUpStatesReducer,
+    signUpStatesInitialState
+  );
+  // check if user is logged in
   const isLoggedIn = !!checkCookies;
 
   useEffect(() => {
@@ -40,70 +88,92 @@ const SignUpForm = () => {
       navigate('/dashboard', { replace: true });
     }
   }, [isLoggedIn]);
+  /*  ********************************************* */
   /**************** Validate Input ****************/
+  /* ********************************************* */
   const validateInput = (data) => {
     if (data.name.trim() === '') {
-      setFormIsValid(false);
-      setErrorMessage('Please Provide Name');
+      dispatchSignUpStates({
+        type: 'INVALID',
+        errorMessage: 'Please Provide Name',
+      });
       nameInputRef.current.activeError();
       return false;
     }
     if (data.email.trim() === '') {
-      setFormIsValid(false);
-      setErrorMessage('Please Provide Email');
+      dispatchSignUpStates({
+        type: 'INVALID',
+        errorMessage: 'Please Provide Email',
+      });
       emailInputRef.current.activeError();
       return false;
     }
     if (!validator.isEmail(data.email)) {
-      setFormIsValid(false);
-      setErrorMessage('Please Provide a Valid Email');
+      dispatchSignUpStates({
+        type: 'INVALID',
+        errorMessage: 'Please Provide a Valid Email',
+      });
       emailInputRef.current.activeError();
       return false;
     }
     if (data.password.trim() === '') {
-      setFormIsValid(false);
-      setErrorMessage('Please Provide Password');
+      dispatchSignUpStates({
+        type: 'INVALID',
+        errorMessage: 'Please Provide Password',
+      });
       passwordInputRef.current.activeError();
       return false;
     }
     if (data.password.trim().length < 8) {
-      setFormIsValid(false);
-      setErrorMessage('Password Should at least be 8 digits');
+      dispatchSignUpStates({
+        type: 'INVALID',
+        errorMessage: 'Password Should at least be 8 digits',
+      });
       passwordInputRef.current.activeError();
       return false;
     }
     if (data.passwordConfirm.trim() === '') {
-      setFormIsValid(false);
-      setErrorMessage('Please Provide Password Confirm');
+      dispatchSignUpStates({
+        type: 'INVALID',
+        errorMessage: 'Please Provide Password Confirm',
+      });
       passwordConfirmInputRef.current.activeError();
       return false;
     }
     if (data.password.trim() !== data.passwordConfirm.trim()) {
-      setFormIsValid(false);
-      setErrorMessage(`Password doesn't match`);
+      dispatchSignUpStates({
+        type: 'INVALID',
+        errorMessage: "Password doesn't match",
+      });
       passwordInputRef.current.activeError();
       passwordConfirmInputRef.current.activeError();
       return false;
     }
     return true;
   };
-  /**************** Send Sign up request ****************/
+  /* ********************************************* */
+  /********************* Sign up ******************/
+  /* ********************************************* */
   const sendSignUpRequest = async (data) => {
     /* Valaidate Inputs */
     const inputValid = validateInput(data);
     if (inputValid) {
-      try {
-        setPending(true);
-        const response = await axios.post(`${api_url}/api/users/signup`, data);
-        setIsSucess(true);
-      } catch (error) {
-        console.log(error.response);
-        setFormIsValid(false);
-        setErrorMessage(error.response.data.message);
+      dispatchSignUpStates({ type: 'PENDING' });
+      const response = await signUpService(data);
+      if (response.status === 'success') {
+        dispatchSignUpStates({ type: 'VALID' });
+      } else {
+        dispatchSignUpStates({
+          type: 'INVALID',
+          errorMessage: response.message,
+        });
       }
+      dispatchSignUpStates({ type: 'CLEAR' });
     }
-    setPending(false);
   };
+  /* ********************************************* */
+  /******************* Submit Handler **************/
+  /* ********************************************* */
   const submitHandler = async (event) => {
     event.preventDefault();
     const data = {
@@ -116,13 +186,13 @@ const SignUpForm = () => {
   };
   return (
     <form className={classes['form-container']} onSubmit={submitHandler}>
-      {!formIsValid && (
+      {signUpStates.invalid && (
         <div className={classes['error-message']}>
           <img src={errorIcon} />
-          <p>{errorMessage}</p>
+          <p>{signUpStates.errorMessage}</p>
         </div>
       )}
-      {isSucess && (
+      {signUpStates.valid && (
         <div className={classes['sucess-message']}>
           <img src={sucessIcon} />
           <p> Please Check your email to veriy your account</p>
@@ -144,8 +214,8 @@ const SignUpForm = () => {
         config={{ type: 'password', placeholder: 'Confirm Password' }}
         ref={passwordConfirmInputRef}
       />
-      {!pending && <Button title={'Sign UP'} />}
-      {pending && <Button title={<CompLoadSpin />} />}
+      {!signUpStates.pending && <Button title={'Sign UP'} />}
+      {signUpStates.pending && <Button title={<CompLoadSpin />} />}
     </form>
   );
 };

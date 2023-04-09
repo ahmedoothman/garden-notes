@@ -1,92 +1,147 @@
-import axios from 'axios';
-InputField;
-import Cookies from 'js-cookie';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import useCookies from 'react-cookie/cjs/useCookies';
+// react
+import React, {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  useReducer,
+} from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+// libraries
+import Cookies from 'js-cookie';
+// images
 import errorIcon from '../../img/warning.png';
+// styles
+import classes from './SignInForm.module.scss';
+// components
 import CompLoadSpin from '../../components/UI/Spinners/CompLoadSpin ';
 import Button from '../../components/UI/Buttons/Button';
 import InputField from '../../components/UI/Inputs/InputField';
-import classes from './SignInForm.module.scss';
 // react redux
 import { useDispatch } from 'react-redux';
 import { authUiActions } from '../../store/index';
-import { useSelector } from 'react-redux';
 // services
-import {
-  updateUserInfoService,
-  setCookiesService,
-} from '../../services/userServices';
-
+import { signInService } from '../../services/userServices';
+// sign in states reducer
+const signInStatesInitialState = {
+  invalid: false,
+  errorMessage: '',
+  pending: false,
+};
+const signInStatesReducer = (state, action) => {
+  if (action.type === 'VALID') {
+    return {
+      invalid: false,
+      errorMessage: '',
+      pending: false,
+    };
+  }
+  if (action.type === 'INVALID') {
+    return {
+      invalid: true,
+      errorMessage: action.errorMessage,
+      pending: false,
+    };
+  }
+  if (action.type === 'PENDING') {
+    return {
+      invalid: false,
+      errorMessage: '',
+      pending: true,
+    };
+  }
+  if (action.type === 'CLEAR') {
+    return {
+      invalid: state.invalid,
+      errorMessage: state.errorMessage,
+      pending: false,
+    };
+  }
+  return signInStatesInitialState;
+};
+// React component
 const SignInForm = () => {
-  let api_url = useSelector((state) => state.authUi.url_api);
+  // react router
   const navigate = useNavigate();
+  // react redux
   const dispatch = useDispatch();
 
   const [checkCookies, setcheckCookies] = useState(Cookies.get('token'));
 
+  // refs
   const emailInputRef = useRef();
   const passwordInputRef = useRef();
-  const [isvalid, setIsvalid] = useState(true);
-  const [errorMessage, setErrorMessage] = useState();
-  const [pending, setPending] = useState(false);
-  const [cookies, setCookies] = useCookies(['user']);
+
+  // show auth form nav
   dispatch(authUiActions.setShown());
+  // sign in states
+  const [signInStates, dispatchSigInStates] = useReducer(
+    signInStatesReducer,
+    signInStatesInitialState
+  );
+  // check if user is logged in
   const isLoggedIn = !!checkCookies;
 
+  // if user is logged in redirect to dashboard
   useEffect(() => {
     if (isLoggedIn) {
       navigate('/dashboard/garden', { replace: true });
     }
   }, [isLoggedIn]);
 
+  /* ******************************************** */
   /**************** Validate Input ****************/
+  /* ******************************************** */
   const validateInput = useCallback((data) => {
     if (data.email.trim() == '') {
-      setIsvalid(false);
       emailInputRef.current.activeError();
-      setErrorMessage('Please Provide Email');
+      dispatchSigInStates({
+        type: 'INVALID',
+        errorMessage: 'Please Provide Email',
+      });
       return false;
     }
     if (data.password.trim() == '') {
-      setIsvalid(false);
-      setErrorMessage('Please Provide Password');
       passwordInputRef.current.activeError();
+      dispatchSigInStates({
+        type: 'INVALID',
+        errorMessage: 'Please Provide Password',
+      });
       return false;
     }
     return true;
   }, []);
-  /**************** Login http request ****************/
-  const sendLoginReq = useCallback(async (data) => {
+
+  /* ******************************************** */
+  /**************** Login request *****************/
+  /* ******************************************** */
+  const sendLoginReq = async (data) => {
     const inputValid = validateInput(data);
     if (inputValid) {
-      setPending(true);
-      try {
-        const response = await axios.post(`${api_url}/api/users/login`, data);
-        setIsvalid(true);
-        /*Set Cookies */
-        setCookiesService(
-          response.data.token,
-          response.data.data.user.name,
-          response.data.data.user.photo,
-          response.data.data.user.email
-        );
-        /* Forward to DashBoard */
+      dispatchSigInStates({ type: 'PENDING' });
+      const response = await signInService(data);
+      if (response.status === 'success') {
+        dispatchSigInStates({ type: 'VALID' });
+        /* Forward to Dashboard */
         navigate('/dashboard/garden', { replace: true });
-      } catch (error) {
-        console.log(error.response.data.message);
-        setErrorMessage(error.response.data.message);
-        setIsvalid(false);
+      } else {
+        // activate error message
+        dispatchSigInStates({
+          type: 'INVALID',
+          errorMessage: response.message,
+        });
+        // activate error message
         if (error.response.data.message !== 'Your email is not verified') {
           passwordInputRef.current.activeError();
           emailInputRef.current.activeError();
         }
       }
+      dispatchSigInStates({ type: 'CLEAR' });
     }
-    setPending(false);
-  }, []);
+  };
+  /* ******************************************** */
   /**************** Submit Handler ****************/
+  /* ******************************************** */
   const submitHandler = async (event) => {
     event.preventDefault();
     const data = {
@@ -98,10 +153,10 @@ const SignInForm = () => {
 
   return (
     <form className={classes['form-container']} onSubmit={submitHandler}>
-      {!isvalid && (
+      {signInStates.invalid && (
         <div className={classes['error-message']}>
           <img src={errorIcon} />
-          <p>{errorMessage}</p>
+          <p>{signInStates.errorMessage}</p>
         </div>
       )}
 
@@ -113,10 +168,9 @@ const SignInForm = () => {
         config={{ type: 'password', placeholder: 'Password' }}
         ref={passwordInputRef}
       />
-      {!pending && <Button title={'Sign in'} />}
-      {pending && <Button title={<CompLoadSpin />} />}
+      {!signInStates.pending && <Button title={'Sign in'} />}
+      {signInStates.pending && <Button title={<CompLoadSpin />} />}
       <Link to='/authentication/forget-password' className={classes['forget']}>
-        {' '}
         Forget Password ?
       </Link>
     </form>

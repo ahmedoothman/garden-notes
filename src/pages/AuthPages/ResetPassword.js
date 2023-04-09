@@ -1,76 +1,141 @@
-import { Fragment, useState, useRef } from 'react';
+// react
+import { Fragment, useRef, useReducer } from 'react';
+import { useParams } from 'react-router-dom';
+// styles
 import classes from './ResetPassword.module.scss';
+// images
 import wideLogo from '../../img/wide-logo-web.png';
-import axios from 'axios';
+import errorIcon from '../../img/warning.png';
+import sucessIcon from '../../img/checked.png';
+// components
 import InputField from '../../components/UI/Inputs/InputField';
 import Button from '../../components/UI/Buttons/Button';
 import CompLoadSpin from '../../components/UI/Spinners/CompLoadSpin ';
-import errorIcon from '../../img/warning.png';
-import sucessIcon from '../../img/checked.png';
-import { useParams } from 'react-router-dom';
-
 // react redux
-import { authUiActions } from '../../store/index';
 import { useSelector } from 'react-redux';
+// services
+import { resetPasswordService } from '../../services/userServices';
+// reset password states reducer
+const resetPasswordStatesInitialState = {
+  success: false,
+  error: false,
+  errorMessage: '',
+  pending: false,
+};
+const resetPasswordStatesReducer = (state, action) => {
+  if (action.type === 'SUCCESS') {
+    return {
+      success: true,
+      error: false,
+
+      errorMessage: '',
+      pending: false,
+    };
+  }
+  if (action.type === 'ERROR') {
+    return {
+      success: false,
+      error: true,
+      errorMessage: action.errorMessage,
+      pending: false,
+    };
+  }
+  if (action.type === 'PENDING') {
+    return {
+      success: false,
+      error: false,
+      errorMessage: '',
+      pending: true,
+    };
+  }
+  if (action.type === 'CLEAR') {
+    return {
+      success: state.success,
+      error: state.error,
+      errorMessage: state.errorMessage,
+      pending: false,
+    };
+  }
+  return resetPasswordStatesInitialState;
+};
+
+// react component
 const ResetPassword = () => {
-  let api_url = useSelector((state) => state.authUi.url_api);
+  // refs
   const passwordInputRef = useRef();
   const passwordConfirmInputRef = useRef();
-  const [isSucess, setIsSucess] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
-  const [pending, setPending] = useState(false);
+  // get nav status from redux
   const navIsShown = useSelector((state) => state.authUi.navIsShown);
+  // get reset token from url
   const params = useParams();
   const resetToken = params.resetToken;
+  // resrt password states reducer
+  const [resetPasswordStates, dispatchResetPasswordStates] = useReducer(
+    resetPasswordStatesReducer,
+    resetPasswordStatesInitialState
+  );
+
+  /* ******************************************** */
+  /**************** Validate Input ****************/
+  /* ******************************************** */
   const validateInput = (data) => {
     if (data.password.trim() === '') {
-      setIsSucess(false);
-      setErrorMessage('Please Provide Password');
+      dispatchResetPasswordStates({
+        type: 'ERROR',
+        errorMessage: 'Please Provide Password',
+      });
       passwordInputRef.current.activeError();
       return false;
     }
     if (data.passwordConfirm.trim() === '') {
-      setIsSucess(false);
-      setErrorMessage('Please Provide Password Confirm');
+      dispatchResetPasswordStates({
+        type: 'ERROR',
+        errorMessage: 'Please Provide Password Confirm',
+      });
       passwordConfirmInputRef.current.activeError();
 
       return false;
     }
     if (data.password.trim() !== data.passwordConfirm.trim()) {
-      setIsSucess(false);
-      setErrorMessage(`Passwords doesn't match`);
+      dispatchResetPasswordStates({
+        type: 'ERROR',
+        errorMessage: "Passwords doesn't match",
+      });
       passwordInputRef.current.activeError();
       passwordConfirmInputRef.current.activeError();
       return false;
     }
     return true;
   };
+  /* ******************************************** */
+  /**************** reset password ****************/
+  /* ******************************************** */
   const resetPasswordReq = async (data) => {
     const inputValid = validateInput(data);
+
     if (inputValid) {
-      try {
-        setPending(true);
-        const response = await axios.patch(
-          `${api_url}/api/users/resetPassword/${resetToken}`,
-          data
-        );
-        setIsSucess(true);
-        console.log(response);
-      } catch (error) {
-        setIsSucess(false);
-        console.log(error.response.data.message);
-        setErrorMessage(error.response.data.message);
+      dispatchResetPasswordStates({ type: 'PENDING' });
+      const response = await resetPasswordService(data, resetToken);
+      if (response.status === 'success') {
+        dispatchResetPasswordStates({ type: 'SUCCESS' });
+      } else {
+        dispatchResetPasswordStates({
+          type: 'ERROR',
+          errorMessage: response.message,
+        });
       }
+      dispatchResetPasswordStates({ type: 'CLEAR' });
     }
-    setPending(false);
   };
+  /* ******************************************** */
+  /********** Password submit handler *************/
+  /* ******************************************** */
   const submitHandler = async (event) => {
     event.preventDefault();
     const data = {
       password: passwordInputRef.current.inputValue,
       passwordConfirm: passwordConfirmInputRef.current.inputValue,
     };
-
     await resetPasswordReq(data);
   };
   return (
@@ -89,13 +154,13 @@ const ResetPassword = () => {
               )}
               <div className={classes['auth-content__form']}>
                 <form onSubmit={submitHandler}>
-                  {!isSucess && errorMessage !== '' && (
+                  {resetPasswordStates.error && (
                     <div className={classes['error-message']}>
                       <img src={errorIcon} />
-                      <p>{errorMessage}</p>
+                      <p>{resetPasswordStates.errorMessage}</p>
                     </div>
                   )}
-                  {isSucess && (
+                  {resetPasswordStates.success && (
                     <div className={classes['sucess-message']}>
                       <img src={sucessIcon} />
                       <p> Your password succesfuly changed, try to sign in</p>
@@ -113,8 +178,10 @@ const ResetPassword = () => {
                     }}
                     ref={passwordConfirmInputRef}
                   />
-                  {!pending && <Button title={'Confirm'} />}
-                  {pending && <Button title={<CompLoadSpin />} />}
+                  {!resetPasswordStates.pending && <Button title={'Confirm'} />}
+                  {resetPasswordStates.pending && (
+                    <Button title={<CompLoadSpin />} />
+                  )}
                 </form>
               </div>
             </div>

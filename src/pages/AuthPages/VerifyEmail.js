@@ -1,43 +1,92 @@
-import { Fragment, useState, useEffect, useCallback } from 'react';
+// react
+import { Fragment, useState, useEffect, useCallback, useReducer } from 'react';
+import { useParams, NavLink } from 'react-router-dom';
+// styles
 import classes from './VerifyEmail.module.scss';
+// images
 import wideLogo from '../../img/wide-logo-web.png';
 import errorIcon from '../../img/warning.png';
 import sucessIcon from '../../img/checked.png';
-import axios from 'axios';
+// components
 import CompLoadSpinnerBig from '../../components/UI/Spinners/CompLoadSpinBig';
-import { useParams } from 'react-router-dom';
-// react redux
-import { useSelector } from 'react-redux';
-import { authUiActions } from '../../store/index';
+// services
+import { verifyEmailService } from '../../services/userServices';
+// verify email states reducer
+const verifyEmailStatesInitialState = {
+  error: false,
+  success: false,
+  errorMessage: '',
+  pending: false,
+};
+const verifyEmailStatesReducer = (state, action) => {
+  if (action.type === 'SUCCESS') {
+    return {
+      error: false,
+      success: true,
+      errorMessage: '',
+      pending: false,
+    };
+  }
+  if (action.type === 'ERROR') {
+    return {
+      error: true,
+      success: false,
+      errorMessage: action.errorMessage,
+      pending: false,
+    };
+  }
+  if (action.type === 'PENDING') {
+    return {
+      error: false,
+      success: false,
+      errorMessage: '',
+      pending: true,
+    };
+  }
+  if (action.type === 'CLEAR') {
+    return {
+      error: state.error,
+      success: state.success,
+      errorMessage: state.errorMessage,
+      pending: false,
+    };
+  }
+  return verifyEmailStatesInitialState;
+};
 
-import { NavLink } from 'react-router-dom';
+// ract component
 const VerifyEmail = () => {
-  let api_url = useSelector((state) => state.authUi.url_api);
-
-  const [errorMessage, setErrorMessage] = useState('');
-  const [isSucess, setIsSucess] = useState(false);
-  const [isPending, setisPending] = useState(true);
+  // get token from url
   const params = useParams();
   const verifyToken = params.verifyToken;
-  const sendToken = useCallback(async () => {
-    try {
-      const response = await axios.patch(
-        `${api_url}/api/users/verifyEmail/${verifyToken}`
-      );
-      setIsSucess(true);
-      console.log(response);
-    } catch (error) {
-      setIsSucess(false);
-      console.log(error.response.data.message);
-      setErrorMessage(error.response.data.message);
+  // verify email states
+  const [verifyEmailStates, dispatchVerifyEmailStates] = useReducer(
+    verifyEmailStatesReducer,
+    verifyEmailStatesInitialState
+  );
+  /* ************************************************ */
+  /* ******************* verify Token *************** */
+  /* ************************************************ */
+  const verifyTokenServer = useCallback(async () => {
+    dispatchVerifyEmailStates({ type: 'PENDING' });
+    const response = await verifyEmailService(verifyToken);
+    if (response.status === 'success') {
+      dispatchVerifyEmailStates({ type: 'SUCCESS' });
+    } else {
+      dispatchVerifyEmailStates({
+        type: 'ERROR',
+        errorMessage: response.message,
+      });
     }
-    setisPending(false);
+    dispatchVerifyEmailStates({ type: 'CLEAR' });
   }, []);
+
+  //calling verify token
   useEffect(() => {
     (async () => {
-      await sendToken();
+      await verifyTokenServer();
     })();
-  }, [sendToken]);
+  }, [verifyTokenServer]);
 
   return (
     <Fragment>
@@ -50,13 +99,13 @@ const VerifyEmail = () => {
           </div>
           <div className={classes['verify-content']}>
             <div className={classes['verify-content__wrapper']}>
-              {!isSucess && !isPending && errorMessage !== '' && (
+              {verifyEmailStates.error && (
                 <div className={classes['error-message']}>
                   <img src={errorIcon} />
-                  <p>{errorMessage}</p>
+                  <p>{verifyEmailStates.errorMessage}</p>
                 </div>
               )}
-              {isSucess && !isPending && (
+              {verifyEmailStates.success && (
                 <div className={classes['sucess-message']}>
                   <img src={sucessIcon} />
                   <p>
@@ -65,7 +114,7 @@ const VerifyEmail = () => {
                   </p>
                 </div>
               )}
-              {isPending && <CompLoadSpinnerBig />}
+              {verifyEmailStates.pending && <CompLoadSpinnerBig />}
             </div>
           </div>
         </div>

@@ -59,7 +59,7 @@ const updateUserInfoService = async () => {
 /* ******************************************** */
 /* *********** update User Data*********** */
 /* ****************************************** */
-const updateUserData = async (data) => {
+const updateUserDataService = async (data) => {
   token = Cookies.get('token');
   // convert data to form data
   let formData = new FormData();
@@ -98,7 +98,7 @@ const updateUserData = async (data) => {
     }
   }
 };
-const updatePassword = async (data) => {
+const updatePasswordService = async (data) => {
   token = Cookies.get('token');
   try {
     const response = await axios.patch(
@@ -115,9 +115,69 @@ const updatePassword = async (data) => {
     return { status: 'error', message: error.response.data.message };
   }
 };
+const signInService = async (data) => {
+  try {
+    const response = await axios.post(`${api_url}/api/users/login`, data);
+    setCookiesService(
+      response.data.token,
+      response.data.data.user.name,
+      response.data.data.user.photo,
+      response.data.data.user.email
+    );
+    return { status: 'success', dataArray: response.data.data.user };
+  } catch (error) {
+    return { status: 'error', message: error.response.data.message };
+  }
+};
+
+const signUpService = async (data) => {
+  try {
+    const response = await axios.post(`${api_url}/api/users/signup`, data);
+    return { status: 'success' };
+  } catch (error) {
+    return { status: 'error', message: error.response.data.message };
+  }
+};
+const verifyEmailService = async (verifyToken) => {
+  try {
+    const response = await axios.patch(
+      `${api_url}/api/users/verifyEmail/${verifyToken}`
+    );
+    return { status: 'success' };
+  } catch (error) {
+    return { status: 'error', message: error.response.data.message };
+  }
+};
+const sendResetPasswordReqService = async (data) => {
+  try {
+    const response = await axios.post(
+      `${api_url}/api/users/forgotPassword`,
+      data
+    );
+    return { status: 'success' };
+  } catch (error) {
+    return { status: 'error', message: error.response.data.message };
+  }
+};
+const resetPasswordService = async (data, resetToken) => {
+  try {
+    const response = await axios.patch(
+      `${api_url}/api/users/resetPassword/${resetToken}`,
+      data
+    );
+    return { status: 'success' };
+  } catch (error) {
+    return { status: 'error', message: error.response.data.message };
+  }
+};
 export {
   updateUserInfoService,
   setCookiesService,
-  updateUserData,
-  updatePassword,
+  updateUserDataService,
+  updatePasswordService,
+  signInService,
+  signUpService,
+  verifyEmailService,
+  sendResetPasswordReqService,
+  resetPasswordService,
 };
