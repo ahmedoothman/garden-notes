@@ -199,6 +199,8 @@ const Inventory = () => {
       dispatchFetchingLoading({ type: 'DONE-CREATED' });
       dispatchUpdateLoadingState({ type: 'DONE' });
       setOpenForm(false);
+      // push new item to inventory data
+      setinventoryData((prev) => [...prev, response.dataObj]);
     } else {
       dispatchUpdateLoadingState({
         type: 'ERROR',
@@ -213,24 +215,21 @@ const Inventory = () => {
     dispatchUpdateLoadingState({ type: 'FETCHING' });
     const response = await updateInventoryItem(data, id);
     // update data
-    setinventoryData((prev) =>
-      prev.map((item) => {
-        if (item._id === id) {
-          return {
-            ...item,
-            name: data.name,
-            photo: data.photo,
-            available: data.available === 'true' ? true : false,
-            Type: data.Type,
-          };
-        }
-        return item;
-      })
-    );
+
     if (response.status === 'success') {
       dispatchFetchingLoading({ type: 'DONE-UPDATED' });
       dispatchUpdateLoadingState({ type: 'DONE' });
       setOpenForm(false);
+
+      // update inventory data
+      setinventoryData((prev) =>
+        prev.map((item) => {
+          if (item._id === id) {
+            return response.dataObj;
+          }
+          return item;
+        })
+      );
     } else {
       dispatchUpdateLoadingState({
         type: 'ERROR',
@@ -270,10 +269,11 @@ const Inventory = () => {
   /* ************ Delete Data Item ************* */
   /* ****************************************** */
   const deleteInventoryItemHandler = async (id) => {
-    dispatchFetchingLoading({ type: 'FETCHING' });
     const response = await deleteInventoryItem(id);
     if (response.status === 'success') {
       dispatchFetchingLoading({ type: 'DONE-DELETED' });
+      // delete item from inventory data
+      setinventoryData((prev) => prev.filter((item) => item._id !== id));
     } else {
       dispatchFetchingLoading({
         type: 'ERROR',

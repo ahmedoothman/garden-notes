@@ -43,7 +43,7 @@ const createInventoryItem = async (data) => {
         Authorization: `Bearer ${token}`,
       },
     });
-    return { status: 'success', dataArray: response.data.data.data };
+    return { status: 'success', dataObj: response.data.data.data };
   } catch (error) {
     return { status: 'error', message: error.response.data.message };
   }
@@ -75,7 +75,7 @@ const updateInventoryItem = async (data, id) => {
         },
       }
     );
-    return { status: 'success', dataArray: response.data.data.data };
+    return { status: 'success', dataObj: response.data.data.data };
   } catch (error) {
     return { status: 'error', message: error.response.data.message };
   }
