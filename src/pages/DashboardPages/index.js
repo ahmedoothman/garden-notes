@@ -1,3 +1,4 @@
+// react
 import { Fragment, useEffect, useState } from 'react';
 import { Outlet, useNavigate, NavLink } from 'react-router-dom';
 import classes from './Dashboard.module.scss';
@@ -13,7 +14,9 @@ import Stack from '@mui/material/Stack';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Typography from '@mui/material/Typography';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+// react component
 const Dashboard = () => {
+  // react router
   const navigate = useNavigate();
   // cookies
   const token = Cookies.get('token');
@@ -21,6 +24,7 @@ const Dashboard = () => {
   let titleContent = useSelector((state) => state.authUi.activeTab);
   const isMin = useSelector((state) => state.authUi.sideNavISMin);
   const activeTab = useSelector((state) => state.authUi.activeTab);
+  // check if user is logged in
   const isLoggedIn = !!token;
   // useEffect
   useEffect(() => {
