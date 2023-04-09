@@ -137,7 +137,7 @@ const updateLoadingReducer = (state, action) => {
 const Inventory = () => {
   const dispatch = useDispatch();
   // inventory data
-  const [inventoryData, setinventoryData] = useState([]);
+  const [inventoryData, serInventoryData] = useState([]);
   const [fetchingLoadingState, dispatchFetchingLoading] = useReducer(
     fetchingLoadingReducer,
     intialFetchingLoadingState
@@ -180,7 +180,7 @@ const Inventory = () => {
     dispatchFetchingLoading({ type: 'FETCHING' });
     const response = await fetchInventory();
     if (response.status === 'success') {
-      setinventoryData(response.dataArray);
+      serInventoryData(response.dataArray);
       dispatchFetchingLoading({ type: 'DONE-LOADING' });
     } else {
       dispatchFetchingLoading({
@@ -200,7 +200,7 @@ const Inventory = () => {
       dispatchUpdateLoadingState({ type: 'DONE' });
       setOpenForm(false);
       // push new item to inventory data
-      setinventoryData((prev) => [...prev, response.dataObj]);
+      serInventoryData((prev) => [...prev, response.dataObj]);
     } else {
       dispatchUpdateLoadingState({
         type: 'ERROR',
@@ -222,7 +222,7 @@ const Inventory = () => {
       setOpenForm(false);
 
       // update inventory data
-      setinventoryData((prev) =>
+      serInventoryData((prev) =>
         prev.map((item) => {
           if (item._id === id) {
             return response.dataObj;
@@ -244,20 +244,20 @@ const Inventory = () => {
     const data = { available: 'false' };
     dispatchUpdateLoadingState({ type: 'FETCHING' });
     const response = await updateInventoryItem(data, id);
-    setinventoryData((prev) =>
-      prev.map((item) => {
-        if (item._id === id) {
-          return {
-            ...item,
-            available: data.available === 'true' ? true : false,
-          };
-        }
-        return item;
-      })
-    );
+
     if (response.status === 'success') {
       dispatchFetchingLoading({ type: 'DONE-UPDATED' });
       dispatchUpdateLoadingState({ type: 'DONE' });
+
+      // update inventory data
+      serInventoryData((prev) =>
+        prev.map((item) => {
+          if (item._id === id) {
+            return response.dataObj;
+          }
+          return item;
+        })
+      );
     } else {
       dispatchUpdateLoadingState({
         type: 'ERROR',
@@ -273,7 +273,7 @@ const Inventory = () => {
     if (response.status === 'success') {
       dispatchFetchingLoading({ type: 'DONE-DELETED' });
       // delete item from inventory data
-      setinventoryData((prev) => prev.filter((item) => item._id !== id));
+      serInventoryData((prev) => prev.filter((item) => item._id !== id));
     } else {
       dispatchFetchingLoading({
         type: 'ERROR',

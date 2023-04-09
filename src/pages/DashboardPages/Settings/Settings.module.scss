@@ -29,12 +29,14 @@
   background-color: $color-primary-black-light;
   color: white;
   padding: 10px 20px;
+  height: 36px;
   width: 200px;
   border: none;
   border-radius: 10px;
   cursor: pointer;
   transition: all 0.4s;
   margin-top: 40px;
+  overflow: hidden;
 }
 .settings-btn:hover {
   background-color: $color-primary-black-dark;
