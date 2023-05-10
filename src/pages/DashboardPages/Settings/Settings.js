@@ -31,17 +31,6 @@ import {
 const Settings = () => {
   let api_url = useSelector((state) => state.authUi.url_api);
   const dispatch = useDispatch();
-  // get user data from cookies
-  const [Token, setToken] = useState(Cookies.get('token'));
-
-  const [firstPass, setFirstPass] = useState(true);
-  const [isPasswordUpdated, setIsPasswordUpdated] = useState(false);
-  const [passwordUpdatedSuccessMessage, setPasswordUpdatedSuccessMessage] =
-    useState('');
-  const [passwordUpdatedFailedMessage, setPasswordUpdatedFailedMessage] =
-    useState('');
-  const [isChangePasswordPending, setIsChangePasswordPending] = useState(false);
-
   /*  ********************************************
    * NAME : Input Refs
    * DESC : refs to collect data and send it to the server
