@@ -99,7 +99,7 @@ const SignInForm = () => {
           errorMessage: response.message,
         });
         // activate error message
-        if (error.message !== 'Your email is not verified') {
+        if (response.message !== 'Your email is not verified') {
           passwordInputRef.current.activeError();
           emailInputRef.current.activeError();
         }
