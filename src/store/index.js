@@ -4,7 +4,7 @@ const initialAuthUiSlice = {
   navIsShown: true,
   sideNavISMin: false,
   activeTab: Cookies.get('activeTab') || 'Garden',
-  url_api: 'https://api.gardennotes.live',
+  url_api: 'https://garden-notes-api-heroku.vercel.app',
 };
 const authUiSlice = createSlice({
   name: 'auth',
